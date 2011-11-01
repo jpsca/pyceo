@@ -1,3 +1,3 @@
-include *.py *.md *.txt
+include *.py *.md
 recursive-include pyceo *
 recursive-include examples *
