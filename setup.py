@@ -2,9 +2,9 @@
 import os
 from setuptools import setup
 
-VERSION = '0.2.1'
+
 ROOTDIR = os.path.dirname(__file__)
-README = os.path.join(ROOTDIR, 'README.txt')
+README = os.path.join(ROOTDIR, 'README.md')
 
 
 def run_tests():
@@ -15,16 +15,14 @@ def run_tests():
 
 setup(
     name='pyCEO',
-    version=VERSION,
+    version='0.2.3',
     author='Juan-Pablo Scaletti',
     author_email='juanpablo@lucumalabs.com',
     packages=['pyceo'],
-    package_data={
-        'pyceo': [
+    package_data={'pyceo': [
             '*.py',
-            '*.txt',
-        ]
-    },
+            '*.md',
+        ]},
     zip_safe=False,
     url='http://github.com/lucuma/pyCEO',
     license='MIT license (http://www.opensource.org/licenses/mit-license.php)',

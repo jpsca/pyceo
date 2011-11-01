@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-    pyCEO
-    ----------------------------------------------
+    # pyCEO
     
     Create management scripts for your applications so you can do
     things like `python manage.py runserver`.
-
-    Originally a part of the Shake web framework. 
     
-    :Copyright © 2010-2011 by Lúcuma labs (http://lucumalabs.com).
-    :MIT License. (http://www.opensource.org/licenses/mit-license.php)
+    
+    ---------------------------------------
+    Coded by Juan-Pablo Scaletti <juanpablo@lucumalabs.com>
+    Copyright © 2010-2011 by Lúcuma labs (http://lucumalabs.com).
+    MIT License. (http://www.opensource.org/licenses/mit-license.php)
 
 """
 import getpass

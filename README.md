@@ -1,11 +1,12 @@
-================
-pyCEO
-================
+
+# pyCEO
 
 Create management scripts for your applications so you can do things like
-`python manage.py runserver`.
+
+	python manage.py runserver
 
 Features:
+
 * Support position based and named arguments.
 * You can define a default action
 * Uses the docstring of the actions as help.
@@ -13,6 +14,7 @@ Features:
 
 Example:
 
+	:::Python
     from pyceo import Manager
 
     manager = Manager()
@@ -47,12 +49,21 @@ Example:
 
 
 Go to examples/ and run
+
     python manage.py help
+
 to see the result.
 
 
-:Copyright © 2010-2011 by Lúcuma labs (http://lucumalabs.com).
-:MIT License. (http://www.opensource.org/licenses/mit-license.php)
+## Why don't just use optparse or argparse?
 
-Thanks to @Yaraher for the name suggestion.
+...
 
+
+---------------------------------------
+
+Coded by Juan-Pablo Scaletti <juanpablo@lucumalabs.com>.<br />
+Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).<br />
+[MIT License] (http://www.opensource.org/licenses/mit-license.php).
+
+Thanks to @Yaraher for the project name suggestion.
