@@ -11,7 +11,6 @@ Features:
 * You can define a default action
 * Uses the docstring of the actions as help.
 
-
 Example:
 
 	:::Python
@@ -64,6 +63,7 @@ to see the result.
 
 Coded by Juan-Pablo Scaletti <juanpablo@lucumalabs.com>.<br />
 Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).<br />
-[MIT License] (http://www.opensource.org/licenses/mit-license.php).
+License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
-Thanks to @Yaraher for the project name suggestion.
+Thanks to [@Yaraher] (http://twitter.com/Yaraher) for the project name suggestion.
+
