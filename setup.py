@@ -15,7 +15,7 @@ def run_tests():
 
 setup(
     name='pyCEO',
-    version='0.2.3',
+    version='0.2.4',
     author='Juan-Pablo Scaletti',
     author_email='juanpablo@lucumalabs.com',
     packages=['pyceo'],
