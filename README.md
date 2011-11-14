@@ -47,7 +47,7 @@ Example:
         manager.run(default='runserver')
 
 
-Go to examples/ and run
+Go to the examples/ folder and run
 
     python manage.py help
 
@@ -56,7 +56,7 @@ to see the result.
 
 ## Why don't just use optparse or argparse?
 
-...
+Because this looks better and is easier to understand.
 
 
 ---------------------------------------
@@ -66,4 +66,3 @@ Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).<br />
 License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
 Thanks to [@Yaraher] (http://twitter.com/Yaraher) for the project name suggestion.
-

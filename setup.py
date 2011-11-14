@@ -4,7 +4,7 @@ from setuptools import setup
 
 
 ROOTDIR = os.path.dirname(__file__)
-README = os.path.join(ROOTDIR, 'README.md')
+README = os.path.join(ROOTDIR, 'README.rst')
 
 
 def run_tests():
@@ -15,13 +15,12 @@ def run_tests():
 
 setup(
     name='pyCEO',
-    version='0.2.4',
+    version='0.3',
     author='Juan-Pablo Scaletti',
     author_email='juanpablo@lucumalabs.com',
     packages=['pyceo'],
     package_data={'pyceo': [
-            '*.py',
-            '*.md',
+            '*.*',
         ]},
     zip_safe=False,
     url='http://github.com/lucuma/pyCEO',

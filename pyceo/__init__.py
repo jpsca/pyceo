@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-    # pyCEO
-    
-    Create management scripts for your applications so you can do
-    things like `python manage.py runserver`.
-    
-    
-    ---------------------------------------
-    Copyright © 2010-2011 by Lúcuma labs (http://lucumalabs.com).
-    MIT License. (http://www.opensource.org/licenses/mit-license.php)
+# pyCEO
+
+Create management scripts for your applications so you can do
+things like `python manage.py runserver`.
+
+
+---------------------------------------
+Copyright © 2010-2011 by Lúcuma labs (http://lucumalabs.com).
+MIT License. (http://www.opensource.org/licenses/mit-license.php)
 
 """
 import getpass
+import os
 import re
 import string
 import sys
@@ -144,6 +145,7 @@ class Manager(object):
             Prefix text
         """
         prog = sys.argv[0]
+        prog = os.path.split(prog)[1]
         
         try:
             name = sys.argv[1]
@@ -303,3 +305,4 @@ def prompt_choices(text, choices, default=None, resolver=string.lower,
             return resp
         if default is not None:
             return default
+

@@ -4,3 +4,4 @@
 build
 dist
 *.egg*
+tests/__pycache__
