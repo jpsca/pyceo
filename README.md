@@ -7,7 +7,7 @@ Create management scripts for your applications so you can do things like
 
 Features:
 
-* Support position based and named arguments.
+* Support positional and named arguments.
 * You can define a default action
 * Uses the docstring of the actions as help.
 
@@ -56,13 +56,12 @@ to see the result.
 
 ## Why don't just use optparse or argparse?
 
-Because this looks better and is easier to understand.
+Because this looks better and is easier to use and understand.
 
 
 ---------------------------------------
-
-Coded by Juan-Pablo Scaletti <juanpablo@lucumalabs.com>.<br />
 Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).<br />
+See `AUTHORS.md` for more details.<br />
 License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
 Thanks to [@Yaraher] (http://twitter.com/Yaraher) for the project name suggestion.

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-# pyCEO
+    # pyCEO
 
-Create management scripts for your applications so you can do
-things like `python manage.py runserver`.
+    Create management scripts for your applications so you can do
+    things like `python manage.py runserver`.
 
-
----------------------------------------
-Copyright © 2010-2011 by Lúcuma labs (http://lucumalabs.com).
-MIT License. (http://www.opensource.org/licenses/mit-license.php)
+    ------------
+    Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).
+    See `AUTHORS.md` for more details.
+    License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
 """
 import getpass
@@ -17,6 +17,8 @@ import re
 import string
 import sys
 
+
+__version__ = '0.4'
 
 HELP_COMMANDS = ('help', 'h')
 
@@ -206,8 +208,8 @@ def formatm(action, msg='', color='OKGREEN'):
 def prompt(text, default=None, _test=None):
     """Ask a question via raw_input() and return their answer.
     
-    :param text: prompt text
-    :param default: default value if no answer is provided.
+    param text: prompt text
+    param default: default value if no answer is provided.
     """
     
     text += ' [%s]' % default if default else ''

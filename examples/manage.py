@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from pyceo import Manager
 
+
 manager = Manager()
 
 @manager.command
