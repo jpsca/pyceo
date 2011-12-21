@@ -62,7 +62,7 @@ setup(
     author = 'Juan-Pablo Scaletti',
     author_email = 'juanpablo@lucumalabs.com',
     packages = [PACKAGE],
-    package_data = find_packages_data(PACKAGE),
+    package_data = find_packages_data(PACKAGE, 'tests'),
     zip_safe = False,
     url = 'http://github.com/lucuma/pyCEO',
     license = 'MIT license (http://www.opensource.org/licenses/mit-license.php)',

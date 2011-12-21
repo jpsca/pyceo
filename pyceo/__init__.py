@@ -6,8 +6,8 @@
     things like `python manage.py runserver`.
 
     ------------
-    Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).
-    See `AUTHORS.md` for more details.
+    Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).  
+    See `AUTHORS.md` for more details.  
     License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
 """
@@ -18,7 +18,7 @@ import string
 import sys
 
 
-__version__ = '0.4'
+__version__ = '0.5'
 
 HELP_COMMANDS = ('help', 'h')
 
@@ -92,15 +92,26 @@ def parse_args(largs_):
     return args, kwargs
 
 
+def smart_outdent(text):
+    """Removes the external indentation of the text without loosing the
+    internal one."""
+    text = text.rstrip()
+    all_indents = re.findall(r'\n(\s+)\w', text)
+    len_indent = 9999 if all_indents else 0
+    for indent in all_indents:
+        len_indent = min(len_indent, len(indent))
+    ext_indent = ' ' * len_indent
+    return text.replace('\n' + ext_indent, '\n').lstrip()
+
+
 class Command(object):
     
     def __init__(self, func):
         self.func = func
         
         description = func.__doc__ or ''
-        indent = ' ' * 6
-        description = re.sub('\n\s*', '\n' + indent, description.rstrip())
-        self.description = description
+        description = smart_outdent(description)
+        self.description = re.sub('\n', '\n      ', description)
     
     def parse_args(self, sargs):
         args, kwargs = parse_args(sargs)
@@ -192,7 +203,7 @@ class Manager(object):
 
 COLORS = {
     'OKGREEN': '\033[92m',
-    'WARNING': '\033[93m',
+    'INFO': '\033[93m',
     'FAIL': '\033[91m',
     'BOLD': '\033[1m',
     'ENDC': '\033[0m',

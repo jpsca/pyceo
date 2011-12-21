@@ -3,7 +3,7 @@ import pytest
 from StringIO import StringIO
 import sys
 
-from pyceo import (Manager, parse_args,
+from pyceo import (Manager, parse_args, smart_outdent,
     prompt, prompt_pass, prompt_bool, prompt_choices)
 
 
@@ -214,6 +214,16 @@ def test_command_wrong_args():
     sys.argv = ['manage.py', 'dontcare', '-n', 'joe']
     manager.run()
     restore_stdout()
+
+
+def test_smart_outdent():
+    text = 'lorem\n  ipsum\n    sit\n    amet\n  foobar'
+    expected = 'lorem\nipsum\n  sit\n  amet\nfoobar'
+    assert smart_outdent(text) == expected
+
+    text = '\n aaa\n  bbb\n   ccc\n'
+    expected = 'aaa\n bbb\n  ccc'
+    assert smart_outdent(text) == expected
 
 
 def test_help():
