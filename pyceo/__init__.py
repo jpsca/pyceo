@@ -18,7 +18,7 @@ import string
 import sys
 
 
-__version__ = '0.5'
+__version__ = '0.6'
 
 HELP_COMMANDS = ('help', 'h')
 
@@ -212,7 +212,7 @@ COLORS = {
 
 def formatm(action, msg='', color='OKGREEN'):
     color = COLORS.get(color, '')
-    lparts = [color, action, COLORS['ENDC'], msg]
+    lparts = [color, action, COLORS['ENDC'], '  ', msg]
     return ''.join(lparts)
 
 
