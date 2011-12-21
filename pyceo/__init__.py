@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-    # pyCEO
+# pyCEO
 
-    Create management scripts for your applications so you can do
-    things like `python manage.py runserver`.
+Create management scripts for your applications so you can do
+things like `python manage.py runserver`.
 
-    ------------
-    Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).  
-    See `AUTHORS.md` for more details.  
-    License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
+------------
+Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).  
+See `AUTHORS.md` for more details.  
+License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
 """
 import getpass
@@ -17,8 +17,7 @@ import re
 import string
 import sys
 
-
-__version__ = '0.6'
+__version__ = '0.7'
 
 HELP_COMMANDS = ('help', 'h')
 
@@ -199,21 +198,6 @@ class Manager(object):
                 name, command.description))
         
         return ''.join(shelp)
-
-
-COLORS = {
-    'OKGREEN': '\033[92m',
-    'INFO': '\033[93m',
-    'FAIL': '\033[91m',
-    'BOLD': '\033[1m',
-    'ENDC': '\033[0m',
-}
-
-
-def formatm(action, msg='', color='OKGREEN'):
-    color = COLORS.get(color, '')
-    lparts = [color, action, COLORS['ENDC'], '  ', msg]
-    return ''.join(lparts)
 
 
 def prompt(text, default=None, _test=None):
