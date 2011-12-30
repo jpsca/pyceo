@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-import pytest
 from StringIO import StringIO
 import sys
 
 from pyceo import (Manager, parse_args, smart_outdent,
     prompt, prompt_pass, prompt_bool, prompt_choices)
+import pytest
 
 
 def set_up_stdout():
@@ -87,7 +87,8 @@ def test_command_args():
     
     sys.argv = ['manage.py', 'hello', '-name=joe']
     manager.run()
-    assert 'hello joe\n' == sys.stdout.getvalue()
+    result = sys.stdout.getvalue()
+    assert 'hello joe\n' == result
     restore_stdout()
 
 
@@ -216,7 +217,46 @@ def test_command_wrong_args():
     restore_stdout()
 
 
+def test_subcommand():
+    set_up_stdout()
+    manager = Manager()
+    printer = manager.subcommand('hello', 'prints hello X', item_name='printer')
+    
+    @printer.command
+    def nurse():
+        print 'Hellooo nurse'
+    
+    sys.argv = ['manage.py', 'hello', 'nurse']
+    manager.run()
+    assert 'Hellooo nurse\n' == sys.stdout.getvalue()
+    restore_stdout()
+
+
+def test_subcommand_help():
+    set_up_stdout()
+    manager = Manager()
+    printer = manager.subcommand('hello', 'prints hello X', item_name='printer')
+    
+    @printer.command
+    def nurse():
+        print 'Hellooo nurse'
+
+    sys.argv = ['manage.py', 'hello']
+    manager.run()
+    result = sys.stdout.getvalue()
+    assert 'prints hello X' in result
+    restore_stdout()
+
+
 def test_smart_outdent():
+    text = 'lorem\n  ipsum\n'
+    expected = 'lorem\nipsum'
+    assert smart_outdent(text) == expected
+
+    text = 'lorem\n\n  ipsum\n'
+    expected = 'lorem\n\nipsum'
+    assert smart_outdent(text) == expected
+
     text = 'lorem\n  ipsum\n    sit\n    amet\n  foobar'
     expected = 'lorem\nipsum\n  sit\n  amet\nfoobar'
     assert smart_outdent(text) == expected
@@ -286,3 +326,4 @@ def test_prompt_pass_default():
     assert result == default
     assert '%s [%s]\n' % (text, default) == sys.stdout.getvalue()
     restore_stdout()
+

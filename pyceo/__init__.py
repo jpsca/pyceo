@@ -5,124 +5,74 @@
 Create management scripts for your applications so you can do
 things like `python manage.py runserver`.
 
+It can also be nested for sub-commands.
+
 ------------
 Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).  
 See `AUTHORS.md` for more details.  
 License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
 """
-import getpass
+from functools import reduce
 import os
 import re
-import string
 import sys
 
-__version__ = '0.7'
+from .helpers import *
+
+
+__version__ = '0.8'
 
 HELP_COMMANDS = ('help', 'h')
-
-
-def _is_a_key(sarg):
-    """Check if `sarg` is a key (eg. -foo, --foo) or a value (eg. -33).
-    """
-    if not sarg.startswith('-'):
-        return False
-    try:
-        float(sarg)
-        return False
-    except ValueError:
-        return True
-
-
-def parse_args(largs_):
-    """Parse the command line arguments and return a list of the positional
-    arguments and a dictionary with the named ones.
-        
-        >>> parse_args(['abc', 'def', '-w', '3', '--foo', 'bar', '-narf=zort'])
-        (['abc, 'def'], {'w': '3', 'foo': 'bar', 'narf': 'zort'})
-        >>> parse_args(['-abc'])
-        ([], {'abc': True})
-        >>> parse_args(['-f', '1', '-f', '2', '-f', '3'])
-        ([], {'f': ['1', '2', '3']})
-    
-    """
-    # Split the 'key=arg' arguments
-    largs = []
-    for arg in largs_:
-        if '=' in arg:
-            key, arg = arg.split('=')
-            largs.append(key)
-        largs.append(arg)
-    
-    args = []
-    flags = []
-    kwargs = {}
-    key = None
-    for sarg in largs:
-        if _is_a_key(sarg):
-            if key is not None:
-                flags.append(key)
-            key = sarg.strip('-')
-            continue
-        
-        if not key:
-            args.append(sarg)
-            continue
-        
-        value = kwargs.get(key)
-        if value:
-            if isinstance(value, list):
-                value.append(sarg)
-            else:
-                value = [value, sarg]
-            kwargs[key] = value
-        else:
-            kwargs[key] = sarg
-    
-    # Get the flags
-    if key:
-        flags.append(key)
-    # An extra key whitout a value is a flag if it hasn't been used before.
-    # Otherwise is a typo.
-    for flag in flags:
-        if not kwargs.get(flag):
-            kwargs[flag] = True
-    
-    return args, kwargs
-
-
-def smart_outdent(text):
-    """Removes the external indentation of the text without loosing the
-    internal one."""
-    text = text.rstrip()
-    all_indents = re.findall(r'\n(\s+)\w', text)
-    len_indent = 9999 if all_indents else 0
-    for indent in all_indents:
-        len_indent = min(len_indent, len(indent))
-    ext_indent = ' ' * len_indent
-    return text.replace('\n' + ext_indent, '\n').lstrip()
 
 
 class Command(object):
     
     def __init__(self, func):
+        self.name = func.__name__
         self.func = func
         
         description = func.__doc__ or ''
         description = smart_outdent(description)
         self.description = re.sub('\n', '\n      ', description)
     
-    def parse_args(self, sargs):
-        args, kwargs = parse_args(sargs)
+    def run(self, args, kwargs):
+        show_help = False
+        if kwargs and not args:
+            show_help = True
+            for key in kwargs:
+                if key not in HELP_COMMANDS:
+                    show_help = False
+                    break
+        elif args and args[0] in HELP_COMMANDS:
+            show_help = True
+        
+        if show_help:
+            print self.get_help()
+            return False
+        
         self.func(*args, **kwargs)
+        return True
+    
+    def get_help(self):
+        shelp = [
+            format_title('USAGE'), '\n',
+            '  ', bold(self.name), '  ', self.description,
+        ]
+        return ''.join(shelp)
 
 
 class Manager(object):
     """Controller class for handling a set of commands.
     """
     
-    def __init__(self):
+    def __init__(self, description=None, item_name='command'):
+        self.description = description
+        self.item_name = item_name
+
         self.commands = {}
+        self.prog = ''
+        self.default = None
     
     def command(self, func):
         """Decorator to register a function as a command.
@@ -144,162 +94,107 @@ class Manager(object):
             Hello world at lucumalabs.com
         
         """
+        if isinstance(func, type):
+            func = func()
         self.commands[func.__name__] = Command(func)
         return func
     
-    def run(self, default=None, prefix=''):
+    def subcommand(self, name, description=None, item_name=None):
+        manager = Manager(description=description, item_name=item_name)
+        self.commands[name] = manager
+        return manager
+    
+    def run(self, default=None):
         """Parse the command line arguments.
         
-        :param default:
-            Name of default command to run if no arguments are passed.
-        
-        :param prefix:
-            Prefix text
+        default
+        :   Name of default command to run if no arguments are passed.
         """
-        prog = sys.argv[0]
-        prog = os.path.split(prog)[1]
-        
+        argv = sys.argv
+        prog = argv[0] 
+        self.prog = os.path.split(prog)[1]
+        self.default = default
         try:
-            name = sys.argv[1]
-            args = sys.argv[2:]
+            name = argv[1]
+            lsargs = argv[2:]
         except IndexError:
             name = default
-            args = []
+            lsargs = []
         
-        if name is None or name.strip('-') in HELP_COMMANDS:
-            print self.get_help(prog, prefix, default)
-            return
+        if (not name) or (name.strip('-') in HELP_COMMANDS):
+            print self.get_help()
+            return False
         
-        command = self.commands.get(name)
+        command = self.find_command(name)
         
         if command is None:
-            print 'Command "%s" not found' % name
-            print self.get_help(prog, prefix, default)
-            return
+            item_name = self.item_name.capitalize()
+            print '%s "%s" not found' % (item_name, name)
+            print self.get_help()
+            return False
         
-        command.parse_args(args)
+        args, kwargs = parse_args(lsargs)
+        command = self.find_subcommand(command, args)
+        if command:
+            return command.run(args, kwargs)
     
-    def get_help(self, prog, prefix='', default=None):
+    def find_subcommand(self, command, args):
+        while isinstance(command, self.__class__):
+            if not args:
+                print command.get_help()
+                return
+            
+            name = args[0]
+            _command = command.find_command(name)
+
+            if _command is None:
+                item_name = command.item_name.capitalize()
+                print '%s "%s" not found' % (item_name, name)
+                print command.get_help()
+                return
+            command = _command
+            args.remove(name)
+        
+        return command
+    
+    def find_command(self, name):
+        command = self.commands.get(name)
+        if command:
+            return command
+        
+        for n, c in self.commands.items():
+            if n.startswith(name):
+                return c
+    
+    def get_help(self):
+        item_name = self.item_name
         shelp = []
-        if prefix:
-            shelp.append(prefix + '\n\n')
-        
-        shelp.extend([
-            '= USAGE ', '=' * 52, '\n',
-            '  %s <action> [<options>]' % prog, '\n',
-            '  %s %s' % (prog, HELP_COMMANDS[0]), '\n',
-            '\n',
-            '= ACTIONS ', '=' * 50, '\n',
+
+        # Usage help
+        if self.description:
+            shelp.extend([
+                format_title('USAGE'), '\n',
+                '  ', self.description
             ])
-        
+        else:
+            shelp.extend([
+                format_title('USAGE'), '\n',
+                '  %s %s [OPTIONS]\n' % (self.prog, item_name),
+                '  %s %s\n' % (self.prog, HELP_COMMANDS[0])
+            ])
+    
+        # Available commands
+        shelp.append(format_title(item_name.upper()))
+        chelp = []
         for name, command in self.commands.items():
-            shelp.append('\n%s %s %s\n' % (
-                ' ' if name != default else '*',
-                name, command.description))
+            args = (
+                ' ' if name != self.default else '*',
+                bold(name),
+                command.description
+            )
+            chelp.append('\n%s %s  %s' % args)
+
+        shelp.append('\n\n'.join(chelp))
         
         return ''.join(shelp)
-
-
-def prompt(text, default=None, _test=None):
-    """Ask a question via raw_input() and return their answer.
-    
-    param text: prompt text
-    param default: default value if no answer is provided.
-    """
-    
-    text += ' [%s]' % default if default else ''
-    while True:
-        if _test is not None:
-            print text
-            resp = _test
-        else:
-            resp = raw_input(text)
-        if resp:
-            return resp
-        if default is not None:
-            return default
-
-
-def prompt_pass(text, default=None, _test=None):
-    """Prompt the user for a secret (like a password) without echoing.
-    
-    :param name: prompt text
-    :param default: default value if no answer is provided.
-    """
-    
-    text += ' [%s]' % default if default else ''
-    while True:
-        if _test is not None:
-            print text
-            resp = _test
-        else:
-            resp = getpass.getpass(text)
-        if resp:
-            return resp
-        if default is not None:
-            return default
-
-
-def prompt_bool(text, default=False, yes_choices=None, no_choices=None,
-      _test=None):
-    """Ask a yes/no question via raw_input() and return their answer.
-    
-    :param text: prompt text
-    :param default: default value if no answer is provided.
-    :param yes_choices: default 'y', 'yes', '1', 'on', 'true', 't'
-    :param no_choices: default 'n', 'no', '0', 'off', 'false', 'f'
-    """
-    
-    yes_choices = yes_choices or ('y', 'yes', 't', 'true', 'on', '1')
-    no_choices = no_choices or ('n', 'no', 'f', 'false', 'off', '0')
-    
-    default = yes_choices[0] if default else no_choices[0]
-    while True:
-        if _test is not None:
-            print text
-            resp = _test
-        else:
-            resp = prompt(text, default)
-        if not resp:
-            return default
-        resp = str(resp).lower()
-        if resp in yes_choices:
-            return True
-        if resp in no_choices:
-            return False
-
-
-def prompt_choices(text, choices, default=None, resolver=string.lower,
-      _test=None):
-    """Ask to select a choice from a list, and return their answer.
-    
-    :param text: prompt text
-    :param choices: list or tuple of available choices. Choices may be
-        strings or (key, value) tuples.
-    :param default: default value if no answer provided.
-    """
-    
-    _choices = []
-    options = []
-    
-    for choice in choices:
-        if isinstance(choice, basestring):
-            options.append(choice)
-        else:
-            options.append("%s [%s]" % (choice[1], choice[0]))
-            choice = choice[0]
-        _choices.append(choice)
-    
-    text += ' – (%s)' % ', '.join(options)
-    while True:
-        if _test is not None:
-            print text
-            resp = _test
-        else:
-            resp = prompt(text, default)
-        resp = resolver(resp)
-        if resp in _choices:
-            return resp
-        if default is not None:
-            return default
 
