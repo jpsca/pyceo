@@ -21,17 +21,18 @@ import sys
 from .helpers import *
 
 
-__version__ = '0.8'
+__version__ = '0.9'
 
 HELP_COMMANDS = ('help', 'h')
 
 
 class Command(object):
     
-    def __init__(self, func):
-        self.name = func.__name__
+    def __init__(self, func, pre=None):
         self.func = func
+        self.pre = pre
         
+        self.name = func.__name__
         description = func.__doc__ or ''
         description = smart_outdent(description)
         self.description = re.sub('\n', '\n      ', description)
@@ -51,6 +52,9 @@ class Command(object):
             print self.get_help()
             return False
         
+        if self.pre:
+            self.pre(args, kwargs)
+        
         self.func(*args, **kwargs)
         return True
     
@@ -66,9 +70,22 @@ class Manager(object):
     """Controller class for handling a set of commands.
     """
     
-    def __init__(self, description=None, item_name='command'):
+    def __init__(self, description=None, item_name='command', pre=None):
+        """
+
+        description
+        :   The help message to use instead of the default one
+
+        item_name
+        :   How to call the commands in the help. Default 'command'.
+
+        pre
+        :   Execute this function before any command.
+
+        """
         self.description = description
         self.item_name = item_name
+        self.pre = pre
 
         self.commands = {}
         self.prog = ''
@@ -96,11 +113,11 @@ class Manager(object):
         """
         if isinstance(func, type):
             func = func()
-        self.commands[func.__name__] = Command(func)
+        self.commands[func.__name__] = Command(func, self.pre)
         return func
     
-    def subcommand(self, name, description=None, item_name=None):
-        manager = Manager(description=description, item_name=item_name)
+    def subcommand(self, name, *args, **kwargs):
+        manager = Manager(*args, **kwargs)
         self.commands[name] = manager
         return manager
     
@@ -109,6 +126,7 @@ class Manager(object):
         
         default
         :   Name of default command to run if no arguments are passed.
+
         """
         argv = sys.argv
         prog = argv[0] 
