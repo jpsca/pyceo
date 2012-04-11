@@ -13,6 +13,10 @@ See `AUTHORS.md` for more details.
 License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
 """
+try:
+    from collections import OrderedDict
+except ImportError:
+    from .ordereddict import OrderedDict
 from functools import reduce
 import os
 import re
@@ -87,7 +91,7 @@ class Manager(object):
         self.item_name = item_name
         self.pre = pre
 
-        self.commands = {}
+        self.commands = OrderedDict()
         self.prog = ''
         self.default = None
     
@@ -210,9 +214,9 @@ class Manager(object):
                 bold(name),
                 command.description
             )
-            chelp.append('\n%s %s  %s' % args)
+            chelp.append('\n%s %s  %s\n' % args)
 
-        shelp.append('\n\n'.join(chelp))
+        shelp.append('\n'.join(chelp))
         
         return ''.join(shelp)
 
