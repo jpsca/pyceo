@@ -1,7 +1,3 @@
-include *.py *.txt *.md *.rst
+include *.py *.txt *.md *.rst Makefile
 recursive-include pyceo *
-recursive-include examples *
-recursive-exclude pyceo *.pyc
-recursive-exclude pyceo .DS_Store
-recursive-exclude examples *.pyc
-recursive-exclude examples .DS_Store
+recursive-include tests *
