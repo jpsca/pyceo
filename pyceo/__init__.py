@@ -25,7 +25,7 @@ import sys
 from .helpers import *
 
 
-__version__ = '1.0.1'
+__version__ = '1.0.3'
 
 HELP_COMMANDS = ('help', 'h')
 

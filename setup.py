@@ -6,6 +6,13 @@ from setuptools import setup
 
 
 PACKAGE = 'pyceo'
+NAME = 'pyCEO'
+URL = 'http://github.com/lucuma/pyCEO'
+DESCRIPTION = 'Create management scripts for your applications'
+
+AUTHOR = 'Juan-Pablo Scaletti'
+AUTHOR_EMAIL = 'juanpablo@lucumalabs.com'
+
 THIS_DIR = os.path.dirname(__file__).rstrip('/')
 
 
@@ -14,7 +21,7 @@ def get_path(*args):
 
 
 def read_from(filepath):
-    with io.open(filepath) as f:
+    with io.open(filepath, 'rt', encoding='utf-8') as f:
         source = f.read()
     return source
 
@@ -50,6 +57,12 @@ def find_packages_data(*roots):
     return dict([(root, find_package_data(root)) for root in roots])
 
 
+def get_requirements():
+    data = read_from(get_path('requirements.txt'))
+    lines = map(lambda s: s.strip(), data.splitlines())
+    return [l for l in lines if l and not l.startswith('#')]
+
+
 def run_tests():
     import sys, subprocess
     errno = subprocess.call([sys.executable, 'runtests.py'])
@@ -57,18 +70,18 @@ def run_tests():
 
 
 setup(
-    name = 'pyCEO',
+    name = NAME,
     version = get_version(),
-    author = 'Juan-Pablo Scaletti',
-    author_email = 'juanpablo@lucumalabs.com',
+    author = AUTHOR,
+    author_email = AUTHOR_EMAIL,
     packages = [PACKAGE],
     package_data = find_packages_data(PACKAGE, 'tests'),
     zip_safe = False,
-    url = 'http://github.com/lucuma/pyCEO',
+    url = URL,
     license = 'MIT license (http://www.opensource.org/licenses/mit-license.php)',
-    description = 'Create management scripts for your applications',
+    description = DESCRIPTION,
     long_description = read_from(get_path('README.rst')),
-    install_requires = [],
+    install_requires = get_requirements(),
     classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
@@ -79,6 +92,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
-    test_suite = '__main__.run_tests',
+    test_suite = '__main__.run_tests'
 )
-
