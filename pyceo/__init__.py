@@ -8,7 +8,7 @@ things like `python manage.py runserver`.
 It can also be nested for sub-commands.
 
 ------------
-Copyright © 2011 by [Lúcuma labs] (http://lucumalabs.com).  
+© 2011 [Lúcuma labs] (http://lucumalabs.com).  
 See `AUTHORS.md` for more details.  
 License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
 
