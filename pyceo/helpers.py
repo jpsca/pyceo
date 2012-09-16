@@ -8,6 +8,9 @@ import re
 import string
 
 
+MAX_INDENT = 80
+
+
 def _is_a_key(sarg):
     """Check if `sarg` is a key (eg. -foo, --foo) or a value (eg. -33).
     """
@@ -77,18 +80,35 @@ def parse_args(largs_):
     return args, kwargs
 
 
-MAX_INDENT = 80
+def smart_outdent(docstring):
+    """Process a docstring text stripping off trailing and leading blank lines
+    and removing the external indentation without loosing the internal one.
 
-def smart_outdent(text):
-    """Removes the external indentation of the text without loosing the
-    internal one."""
-    text = text.expandtabs(4).rstrip()
-    all_indents = re.findall(r'\n+(\s+)\w', text)
-    len_indent = MAX_INDENT if all_indents else 0
-    for indent in all_indents:
-        len_indent = min(len_indent, len(indent))
-    ext_indent = ' ' * len_indent
-    return text.replace('\n' + ext_indent, '\n').lstrip()
+    """
+    if not docstring:
+        return ''
+    lines = docstring.expandtabs().splitlines()
+    
+    # Determine minimum indentation (first line doesn't count):
+    indent = MAX_INDENT
+    for line in lines[1:]:
+        stripped = line.lstrip()
+        if stripped:
+            indent = min(indent, len(line) - len(stripped))
+
+    # Remove indentation (first line is special):
+    trimmed = [lines[0].strip()]
+    if indent < MAX_INDENT:
+        for line in lines[1:]:
+            trimmed.append(line[indent:].rstrip())
+
+    # Strip off trailing and leading blank lines:
+    while trimmed and not trimmed[-1]:
+        trimmed.pop()
+    while trimmed and not trimmed[0]:
+        trimmed.pop(0)
+    
+    return '\n'.join(trimmed)
 
 
 def esc(*codes):
