@@ -1,3 +1,5 @@
+**IMPORTANT**: I'm not mantaining this library any more. I now use [Baker](https://bitbucket.org/mchaput/baker/wiki/Home) in my projects
+ and you should too.
 
 # pyCEO
 
