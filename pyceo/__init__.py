@@ -7,17 +7,15 @@ things like `python manage.py runserver`.
 
 It can also be nested for sub-commands.
 
-------------
-© 2011 [Lúcuma labs] (http://lucumalabs.com).  
-See `AUTHORS.md` for more details.  
-License: [MIT License] (http://www.opensource.org/licenses/mit-license.php).
+
+:copyright: `Juan-Pablo Scaletti <http://jpscaletti.com>`_.
+:license: MIT, see LICENSE for more details.
 
 """
 try:
     from collections import OrderedDict
 except ImportError:
     from .ordereddict import OrderedDict
-from functools import reduce
 import os
 import re
 import sys
@@ -31,16 +29,16 @@ HELP_COMMANDS = ('help', 'h')
 
 
 class Command(object):
-    
+
     def __init__(self, func, pre=None):
         self.func = func
         self.pre = pre
-        
+
         self.name = func.__name__
         description = func.__doc__ or ''
         description = smart_outdent(description)
         self.description = re.sub('\n', '\n      ', description)
-    
+
     def run(self, args, kwargs):
         show_help = False
         if kwargs and not args:
@@ -51,17 +49,17 @@ class Command(object):
                     break
         elif args and args[0] in HELP_COMMANDS:
             show_help = True
-        
+
         if show_help:
             print self.get_help()
             return False
-        
+
         if self.pre:
             self.pre(args, kwargs)
-        
+
         self.func(*args, **kwargs)
         return True
-    
+
     def get_help(self):
         shelp = [
             format_title('USAGE'), '\n',
@@ -73,7 +71,7 @@ class Command(object):
 class Manager(object):
     """Controller class for handling a set of commands.
     """
-    
+
     def __init__(self, description=None, item_name='command', pre=None):
         """
 
@@ -94,46 +92,46 @@ class Manager(object):
         self.commands = OrderedDict()
         self.prog = ''
         self.default = None
-    
+
     def command(self, func):
         """Decorator to register a function as a command.
-            
+
             @manager.command
             def hello(name, url='http://google.com'):
                 print "hello", name, 'at', url
-            
+
             >>> python manager.py hello -name Larry
             Hello Larry at http://google.com
-            
+
             >>> python manager.py hello -name Steve -url bing.com
             Hello Steve at bing.com
-            
+
             >>> python manager.py hello nurse "Burbank, California"
             Hello nurse at Burbank, California
-            
+
             >>> python manager.py hello world lucumalabs.com
             Hello world at lucumalabs.com
-        
+
         """
         if isinstance(func, type):
             func = func()
         self.commands[func.__name__] = Command(func, self.pre)
         return func
-    
+
     def subcommand(self, name, *args, **kwargs):
         manager = Manager(*args, **kwargs)
         self.commands[name] = manager
         return manager
-    
+
     def run(self, default=None):
         """Parse the command line arguments.
-        
+
         default
         :   Name of default command to run if no arguments are passed.
 
         """
         argv = sys.argv
-        prog = argv[0] 
+        prog = argv[0]
         self.prog = os.path.split(prog)[1]
         self.default = default
         try:
@@ -142,30 +140,30 @@ class Manager(object):
         except IndexError:
             name = default
             lsargs = []
-        
+
         if (not name) or (name.strip('-') in HELP_COMMANDS):
             print self.get_help()
             return False
-        
+
         command = self.find_command(name)
-        
+
         if command is None:
             item_name = self.item_name.capitalize()
             print '%s "%s" not found' % (item_name, name)
             print self.get_help()
             return False
-        
+
         args, kwargs = parse_args(lsargs)
         command = self.find_subcommand(command, args)
         if command:
             return command.run(args, kwargs)
-    
+
     def find_subcommand(self, command, args):
         while isinstance(command, self.__class__):
             if not args:
                 print command.get_help()
                 return
-            
+
             name = args[0]
             _command = command.find_command(name)
 
@@ -176,18 +174,18 @@ class Manager(object):
                 return
             command = _command
             args.remove(name)
-        
+
         return command
-    
+
     def find_command(self, name):
         command = self.commands.get(name)
         if command:
             return command
-        
+
         for n, c in self.commands.items():
             if n.startswith(name):
                 return c
-    
+
     def get_help(self):
         item_name = self.item_name
         shelp = []
@@ -204,7 +202,7 @@ class Manager(object):
                 '  %s %s [OPTIONS]\n' % (self.prog, item_name),
                 '  %s %s\n' % (self.prog, HELP_COMMANDS[0])
             ])
-    
+
         # Available commands
         shelp.append(format_title(item_name.upper()))
         chelp = []
@@ -217,6 +215,5 @@ class Manager(object):
             chelp.append('\n%s %s  %s\n' % args)
 
         shelp.append('\n'.join(chelp))
-        
-        return ''.join(shelp)
 
+        return ''.join(shelp)

@@ -4,4 +4,11 @@
 build
 dist
 *.egg*
-tests/__pycache__
+.idea
+
+.coverage
+.tox
+htmlcov
+__pycache__
+*.sublime-*
+

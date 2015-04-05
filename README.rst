@@ -30,7 +30,7 @@ Example::
     def initdb():
         """Create the database tables (if they don't exist)"""
         from app.models import db
-        
+
         db.create_all()
 
 
@@ -39,7 +39,7 @@ Example::
         """[-login] LOGIN [-passw] NEW_PASSWORD
         Changes the password of an existing user."""
         from app.app import auth
-        
+
         auth.change_password(login, passw)
 
 
@@ -59,3 +59,8 @@ Why don't just use optparse or argparse?
 
 Because this looks better and is easier to use and understand.
 
+
+______
+
+:copyright: `Juan-Pablo Scaletti <http://jpscaletti.com>`_.
+:license: MIT, see LICENSE for more details.
