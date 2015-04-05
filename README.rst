@@ -12,7 +12,9 @@ Features:
 * You can define a default action
 * Uses the docstring of the actions as help.
 
-Example::
+Example:
+
+.. code:: python
 
     from pyceo import Manager
 
