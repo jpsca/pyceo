@@ -10,8 +10,8 @@ NAME = 'pyCEO'
 URL = 'http://github.com/lucuma/pyCEO'
 DESCRIPTION = 'Create management scripts for your applications'
 
-AUTHOR = 'Juan-Pablo Scaletti'
-AUTHOR_EMAIL = 'juanpablo@lucumalabs.com'
+AUTHOR = 'Lúcuma labs'
+AUTHOR_EMAIL = 'info@lucumalabs.com'
 
 THIS_DIR = os.path.dirname(__file__).rstrip('/')
 

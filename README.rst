@@ -64,5 +64,5 @@ Because this looks better and is easier to use and understand.
 
 ______
 
-:copyright: `Juan-Pablo Scaletti <http://jpscaletti.com>`_.
+:copyright: `Lúcuma labs S.A.C. <http://lucumalabs.com>`_
 :license: MIT, see LICENSE for more details.
