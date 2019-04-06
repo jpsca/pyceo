@@ -5,12 +5,6 @@
 Create management scripts for your applications so you can do
 things like `python manage.py runserver`.
 
-It can also be nested for sub-commands.
-
-
-:copyright: `Lúcuma labs S.A.C. <http://lucumalabs.com>`_
-:license: MIT, see LICENSE for more details.
-
 """
 try:
     from collections import OrderedDict
