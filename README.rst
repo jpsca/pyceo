@@ -2,17 +2,7 @@
 pyCEO
 =========
 
-Create management scripts for your applications so you can do things like::
-
-	python manage.py runserver
-
-Features:
-
-* Support position based and named arguments.
-* You can define a default action
-* Uses the docstring of the actions as help.
-
-Example:
+A composable command-line toolkit focused on looking good while other code do all the work.
 
 .. code:: python
 
