@@ -51,8 +51,10 @@ Why don't just use optparse or argparse?
 
 Because this looks better and is easier to use and understand.
 
+Why don't just use click?
+-----------------------------------------
 
-______
+Because this looks better and is easier to use and understand.
 
-:copyright: `Lúcuma labs S.A.C. <http://lucumalabs.com>`_
+
 :license: MIT, see LICENSE for more details.
