@@ -2,7 +2,7 @@
 pyCEO
 =========
 
-A composable command-line toolkit focused on looking good while other code do all the work.
+A minimal and composable command-line toolkit **focused on looking good and delegate all the real work**.
 
 .. code:: python
 
