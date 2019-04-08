@@ -1,0 +1,8 @@
+mkdocs >=1
+mkdocs-material >=4.0
+pygments >=2.0
+pygments-github-lexers 0
+pytest >=4.0
+pytest-cov >=2.0
+tox >=3.7
+flake8 >=3.7

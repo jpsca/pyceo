@@ -1,0 +1,46 @@
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry]
+name = "pyceo"
+version = "2.0"
+description = "It looks good and delegate all the real work to you."
+authors = [
+    "Juan-Pablo Scaletti <juanpablo@jpscaletti.com>"
+]
+license = "MIT"
+
+readme = "README.md"
+
+homepage = "https://github.com/jpscaletti/pyceo"
+repository = "https://github.com/jpscaletti/pyceo"
+# documentation = "https://pyceo.jpscaletti.com/docs"
+
+keywords = ["cli", "toolkit", "composable"]
+
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+]
+
+# Requirements
+[tool.poetry.dependencies]
+python = "^3.5"
+"colorama" = "^0.4"
+
+[tool.poetry.dev-dependencies]
+"mkdocs" = ">=1"
+"mkdocs-material" = ">=4.*"
+"pygments" = ">=2.*"
+"pygments-github-lexers" = "*"
+"pytest" = ">=4.*"
+"pytest-cov" = ">=2.*"
+"tox" = ">=3.7"
+"flake8" = ">=3.7"

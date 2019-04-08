@@ -1,24 +1,36 @@
-.PHONY: clean clean-pyc test upload
+all: PHONY
 
-all: clean clean-pyc test
+help:
+	@echo "clean - remove build/python artifacts"
+	@echo "test - run tests"
+	@echo "flake - check style with flake8"
+	@echo "testcov - check code coverage"
+	@echo "coverage - generate an HTML report of the coverage"
 
-clean: clean-pyc
-	rm -rf build
-	rm -rf dist
+clean: clean-build clean-pyc
+
+clean-build:
+	rm -rf build/
+	rm -rf dist/
 	rm -rf *.egg-info
-	rm -rf tests/res/t
-	find . -name '.DS_Store' -exec rm -f {} \;
+	rm -rf pip-wheel-metadata
 
 clean-pyc:
-	find . -name '*.pyc' -exec rm -f {} \;
-	find . -name '*.pyo' -exec rm -f {} \;
-	find . -name '*~' -exec rm -f {} \;
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -rf {} +
+	find . -name '.pytest_cache' -exec rm -rf {} +
+	find . -name '*.egg-info' -exec rm -rf {} +
 
 test:
-	rm -rf tests/res/t
-	python runtests.py tests
-	rm -rf tests/__pycache__
+	pytest -x pyceo tests
 
-upload: clean
-	python setup.py sdist upload
+flake:
+	flake8 --config=setup.cfg pyceo tests
 
+testcov:
+	pytest --cov pyceo pyceo tests
+
+coverage:
+	pytest --cov-report html --cov pyceo pyceo tests

@@ -1,3 +1,0 @@
-include *.py *.txt *.md *.rst Makefile
-recursive-include pyceo *
-recursive-include tests *
