@@ -1,5 +1,6 @@
 from pathlib import Path
 from shutil import rmtree
+import os
 import sys
 
 import twine  # noqa
@@ -10,7 +11,7 @@ from pyceo import __version__
 HERE = Path(__file__).parent.resolve()
 
 
-def run(self):
+def run():
     try:
         print("Removing previous builds…")
         rmtree(str(HERE / "dist"))
@@ -18,14 +19,14 @@ def run(self):
         pass
 
     print("Building Source and Wheel (universal) distribution…")
-    print("{0} setup.py sdist bdist_wheel --universal\n".format(sys.executable))
+    os.system("{0} setup.py sdist bdist_wheel --universal\n".format(sys.executable))
 
     print("Uploading the package to PyPI via Twine…")
-    print("twine upload dist/*")
+    os.system("twine upload dist/*")
 
     print("Pushing git tags…")
-    print("git tag v{0}".format(__version__))
-    print("git push --tags")
+    os.system("git tag v{0}".format(__version__))
+    os.system("git push --tags")
 
 
 if __name__ == "__main__":
