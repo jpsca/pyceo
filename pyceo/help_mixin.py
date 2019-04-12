@@ -45,7 +45,8 @@ class HelpMixin(object):
         attrs = list(map(lambda it: len(getattr(it, attr)), items))
         if not attrs:
             return self.MIN_COL_SIZE
-        return max(max(*attrs), self.MIN_COL_SIZE)
+        attrs.append(self.MIN_COL_SIZE)
+        return max(*attrs)
 
     def show_help_root(self):
         msg = self.help_root()

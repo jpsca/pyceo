@@ -23,6 +23,8 @@ def publish():
     except OSError:
         pass
 
+    call("{0} setup.py install".format(sys.executable))
+
     print("Building Source and Wheel distribution…")
     call("{0} setup.py sdist bdist_wheel".format(sys.executable))
 
