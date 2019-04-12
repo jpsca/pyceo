@@ -1,9 +1,10 @@
 from pathlib import Path
 from shutil import rmtree
-import os
+import subprocess
 import sys
 
 import twine  # noqa
+import wheel  # noqa
 
 from pyceo import __version__
 
@@ -11,23 +12,27 @@ from pyceo import __version__
 HERE = Path(__file__).parent.resolve()
 
 
-def run():
+def call(cmd):
+    return subprocess.check_call(cmd, shell=True)
+
+
+def publish():
     try:
         print("Removing previous builds…")
         rmtree(str(HERE / "dist"))
     except OSError:
         pass
 
-    print("Building Source and Wheel (universal) distribution…")
-    os.system("{0} setup.py sdist bdist_wheel --universal\n".format(sys.executable))
+    print("Building Source and Wheel distribution…")
+    call("{0} setup.py sdist bdist_wheel".format(sys.executable))
 
-    print("Uploading the package to PyPI via Twine…")
-    os.system("twine upload dist/*")
+    print("Uploading the package to PyPI…")
+    call("twine upload dist/*")
 
     print("Pushing git tags…")
-    os.system("git tag v{0}".format(__version__))
-    os.system("git push --tags")
+    call("git tag v{0}".format(__version__))
+    call("git push --tags")
 
 
 if __name__ == "__main__":
-    run()
+    publish()
