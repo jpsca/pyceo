@@ -2,11 +2,19 @@
 
 class Param(object):
 
-    __slots__ = ("name", "help")
+    __slots__ = ("name", "full_name", "help")
 
     def __init__(self, name, help):
-        self.name = name
+        name = name.lstrip("-")
+        self.name = name.split(" ", 1)[0]
+        self.full_name = name
         self.help = help
+
+    @property
+    def title(self):
+        if len(self.name) == 1:
+            return "-" + self.full_name
+        return "--" + self.full_name
 
 
 def param(name, help=""):
@@ -14,7 +22,8 @@ def param(name, help=""):
     def decorator(func):
         params = getattr(func, "params", [])
         _param = Param(name, help)
-        params.append(_param)
+        # Insert at the beginning so the apparent order is preserved
+        params.insert(0, _param)
         func.params = params
         return func
 
@@ -26,7 +35,8 @@ def option(name, help=""):
     def decorator(func):
         options = getattr(func, "options", [])
         _option = Param(name, help)
-        options.append(_option)
+        # Insert at the beginning so the apparent order is preserved
+        options.insert(0, _option)
         func.options = options
         return func
 

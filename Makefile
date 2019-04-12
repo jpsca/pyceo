@@ -1,11 +1,16 @@
 all: PHONY
 
 help:
+	@echo "install - install for development"
 	@echo "clean - remove build/python artifacts"
 	@echo "test - run tests"
 	@echo "flake - check style with flake8"
 	@echo "testcov - check code coverage"
 	@echo "coverage - generate an HTML report of the coverage"
+
+install:
+	pip install -e .
+	pip install -r requirements-dev.txt
 
 clean: clean-build clean-pyc
 

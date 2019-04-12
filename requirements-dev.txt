@@ -1,7 +1,7 @@
 mkdocs >=1
 mkdocs-material >=4.0
 pygments >=2.0
-pygments-github-lexers 0
+pygments-github-lexers
 pytest >=4.0
 pytest-cov >=2.0
 tox >=3.7

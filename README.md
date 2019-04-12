@@ -1,34 +1,33 @@
 
 # pyceo
 
-*It looks good and delegate all the real work to you* ;)
+*It looks good and delegate all the work to you* ;)
 
-A minimal and composable command-line-interface toolkit.
+A minimal and ridiculously good looking command-line-interface toolkit.
 
-In three points:
+In four points:
 
 - Completely customizable help page, but pretty by default.
-- Arbitrary nesting of "managers" (groups) of commands
-  Just do `my_manager.manager(another_manager, help="A one-line description")`.
+- Add new commands at any time and from other files.
+- No sub-commands but grouping of commands instead.
+- Easy to use and understand.
 
 
 ## An example
 
 ```python
 # example.py
-from pyceo import manager, param, option
+from pyceo import Manager, param, option
 
 
-@manager()
-def cli():
-    """Welcome to Proper v1.2.3"""
-    pass
+cli = Manager("Welcome to Proper v1.2.3")
 
 
-@cli.command("Creates a new Proper application at `path`")
-@param("path", help="Where to create the new application?")
+@cli.command(help="Creates a new Proper application at `path`.")
+@param("path", help="Where to create the new application.")
+@option("quiet", help="Supress all output.")
 def new(path):
-    """The "proper new" command creates a new Proper application with a default
+    """The `proper new` command creates a new Proper application with a default
     directory structure and configuration at the path you specify.
 
     Example: `proper new ~/Code/blog`
@@ -37,50 +36,28 @@ def new(path):
     pass
 
 
-@cli.manager("Database-related commands")
-def db():
+@cli.command()
+def fizzbuzz():
+    """The infamous fizz buzz."""
     pass
 
 
-@db.command("Autogenerate a new revision file")
-@option(
-    "-m", "--message",
-    help="Revision message"
-)
-@option(
-    "--sql",
-    help="Don't emit SQL to database, dump to standard output instead"
-)
-@option(
-    "--head",
-    help="Specify head revision or <branchname>@head to base new revision on"
-)
-@option(
-    "--splice",
-    help="Allow a non-head revision as the \"head\" to splice onto"
-)
-@option(
-    "--branch-label",
-    help="Specify a branch label to apply to the new revision"
-)
-@option(
-    "--version-path",
-    help="Specify specific path from config for version file"
-)
-@option(
-    "--rev-id",
-    help="Specify a hardcoded revision id instead of generating one"
-)
-@option(
-    "-n", "--name",
-    help="Name of section in .ini file to use for Alembic config"
-)
-@option(
-    "-x",
-    help="Additional arguments consumed by custom env.py scripts"
-)
+@cli.command(group="db")
+@option("message", help="Revision message")
+@option("sql", help="Dont emit SQL to database - dump to standard output instead")
+@option("head", help="Specify head or <branchname>@head to base new revision on")
 def migrate(**kwargs):
-    """This is an alias for "revision --autogenerate"."""
+    """Autogenerate a new revision file.
+
+    This is an alias for "revision --autogenerate"."""
+    pass
+
+
+@cli.command(group="db")
+@option("name", help="Name of section in .ini file to use for Alembic config")
+def branches(**kwargs):
+    """Show current branch points.
+    """
     pass
 
 
@@ -99,7 +76,7 @@ customizable) help message:
 
 **pyceo** doesn't include any related features like prompts, progress bars, table formatting, [file editing](https://pypi.org/project/text-editor/), etc. It doesn't matter because for those features many dedicated python libraries can be used.
 
-You could say it *focuses on its core competences while synergetically interface with other libraries to take it to the next level*.
+You could say it *focuses on its core competencies while synergetically interface with other libraries to take it to the next level*. 💪🚀
 
 
 ## Why don't just use optparse or argparse?
@@ -112,6 +89,6 @@ Are you kidding? Because this is way easier to use and understand.
 Because this looks better and is easier to use and understand.
 
 
-## Interested?
+## Why don't just use...?
 
-~See the documentation for a complete description of the API.~ TODO
+Because this library fits better my mental model. I hope it matches yours as well.
