@@ -24,8 +24,8 @@ class Manager(HelpMixin):
         self.commands = {}
         self.command_groups = {None: []}
 
-    def __call__(self, *args, **opts):
-        return self.func(*args, **opts)
+    def __call__(self, default=None):
+        return self.run(default=default)
 
     def run(self, default=None):
         """Parse the command line arguments.

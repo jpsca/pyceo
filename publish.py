@@ -7,14 +7,12 @@ HERE = Path(__file__).parent.resolve()
 
 
 def call(cmd):
-    return subprocess.check_call(cmd, shell=True)
+    return subprocess.check_output(cmd, shell=True)
 
 
 def publish():
     import twine  # noqa
     import wheel  # noqa
-
-    from pyceo import __version__
 
     try:
         print("Removing previous builds…")
@@ -29,7 +27,8 @@ def publish():
     call("twine upload dist/*")
 
     print("Pushing git tags…")
-    call("git tag v{0}".format(__version__))
+    version = call("python setup.py --version").strip()
+    call("git tag v{}".format(version))
     call("git push --tags")
 
 
