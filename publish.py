@@ -1,12 +1,6 @@
 from pathlib import Path
 from shutil import rmtree
 import subprocess
-import sys
-
-import twine  # noqa
-import wheel  # noqa
-
-from pyceo import __version__
 
 
 HERE = Path(__file__).parent.resolve()
@@ -17,16 +11,19 @@ def call(cmd):
 
 
 def publish():
+    import twine  # noqa
+    import wheel  # noqa
+
+    from pyceo import __version__
+
     try:
         print("Removing previous builds…")
         rmtree(str(HERE / "dist"))
     except OSError:
         pass
 
-    call("{0} setup.py install".format(sys.executable))
-
     print("Building Source and Wheel distribution…")
-    call("{0} setup.py sdist bdist_wheel".format(sys.executable))
+    call("python setup.py sdist bdist_wheel")
 
     print("Uploading the package to PyPI…")
     call("twine upload dist/*")

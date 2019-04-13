@@ -1,16 +1,13 @@
 all: PHONY
 
 help:
-	@echo "install - install for development"
 	@echo "clean - remove build/python artifacts"
 	@echo "test - run tests"
 	@echo "flake - check style with flake8"
 	@echo "testcov - check code coverage"
 	@echo "coverage - generate an HTML report of the coverage"
-
-install:
-	pip install -e .
-	pip install -r requirements-dev.txt
+	@echo "install - install for development"
+	@echo "publish - publish a new version"
 
 clean: clean-build clean-pyc
 
@@ -39,3 +36,11 @@ testcov:
 
 coverage:
 	pytest --cov-report html --cov pyceo pyceo tests
+
+install:
+	pip install -e .
+	pip install -r requirements-dev.txt
+
+publish:
+	python setup.py install
+	python publish.py
