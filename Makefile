@@ -7,7 +7,6 @@ help:
 	@echo "testcov - check code coverage"
 	@echo "coverage - generate an HTML report of the coverage"
 	@echo "install - install for development"
-	@echo "publish - publish a new version"
 
 clean: clean-build clean-pyc
 
@@ -40,7 +39,3 @@ coverage:
 install:
 	pip install -e .
 	pip install -r requirements-dev.txt
-
-publish:
-	pip install twine wheel
-	python publish.py
