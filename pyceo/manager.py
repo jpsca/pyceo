@@ -61,7 +61,7 @@ class Manager(HelpMixin):
     def add_command(self, func, group=None, help="", name=None):
         if isinstance(func, Command):
             help = help or func.help
-            name = name or func.help
+            name = name or func.name
             func = func.func
 
         cmd = Command(func, group=group, help=help, name=name)

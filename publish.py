@@ -7,7 +7,8 @@ HERE = Path(__file__).parent.resolve()
 
 
 def call(cmd):
-    return subprocess.check_output(cmd, shell=True)
+    return subprocess.check_output(cmd, shell=True) \
+        .split(b"\n", 1)[0].decode("utf8")
 
 
 def publish():
@@ -27,8 +28,8 @@ def publish():
     call("twine upload dist/*")
 
     print("Pushing git tags…")
-    version = call("python setup.py --version").strip()
-    call("git tag v{}".format(version))
+    version = call("python setup.py --version")
+    call("git tag v" + version)
     call("git push --tags")
 
 
