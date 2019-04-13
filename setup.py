@@ -8,7 +8,7 @@ HERE = Path(__file__).parent.resolve()
 
 setup(
     name="pyceo",
-    version="2.0.5",
+    version="2.0.6",
     description="A minimal and ridiculously good looking command-line-interface toolkit.",
     long_description=(HERE / "README.md").read_text(),
     long_description_content_type="text/markdown",

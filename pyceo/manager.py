@@ -70,9 +70,9 @@ class Manager(HelpMixin):
 
         self.commands[cmd.name] = cmd
 
-        group = None
-        if ":" in cmd.name:
+        if group is None and ":" in cmd.name:
             group = cmd.name.split(":", 1)[0]
+
         self.command_groups.setdefault(group, [])
         self.command_groups[group].append(cmd)
 
