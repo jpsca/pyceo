@@ -9,7 +9,7 @@ import sys
 
 from .command import Command, HELP_COMMANDS
 from .parser import parse_args
-from .help_mixin import HelpMixin
+from .helper import HelpMixin
 
 
 __all__ = ("Manager", )

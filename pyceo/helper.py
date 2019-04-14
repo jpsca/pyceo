@@ -1,36 +1,39 @@
 import textwrap
 
 import colorama
-from colorama import Fore, Style
+from colorama import Style, Fore, Back
 
+
+__all__ = ("DEFAULT_STYLES", "HelpMixin", "echo", "styled")
 
 colorama.init()
+
+DEFAULT_STYLES = {
+    "<h2>": "<op:bright><fg:yellow>",
+    "</h2>": "</op></fg>",
+
+    "<h3>": "<fg:cyan>",
+    "</h3>": "</fg>",
+
+    "<b>": "<op:bright>",
+    "</b>": "</op>",
+
+    "<cmd>": "<fg:lgreen>",
+    "</cmd>": "</fg>",
+
+    "<error>": "<op:bright><fg:red>",
+    "</error>": "</op></fg>",
+}
 
 
 class HelpMixin(object):
 
     MIN_COL_SIZE = 12
     INDENT_WITH = " "
+    styles = DEFAULT_STYLES
 
-    styles = {
-        "<h2>": "<op:bright><fg:yellow>",
-        "</h2>": "</op></fg>",
-
-        "<h3>": "<fg:cyan>",
-        "</h3>": "</fg>",
-
-        "<b>": "<op:bright>",
-        "</b>": "</op>",
-
-        "<cmd>": "<fg:lgreen>",
-        "</cmd>": "</fg>",
-
-        "<error>": "<op:bright><fg:red>",
-        "</error>": "</op></fg>",
-    }
-
-    def echo(self, txt):
-        print(styled(txt, self.styles))
+    def echo(self, text):
+        echo(text, self.styles)
 
     def show_error(self, msg):
         error_msg = f"ERROR: {msg}"
@@ -119,7 +122,11 @@ class HelpMixin(object):
         return "".join(msg) + "\n"
 
 
-def styled(text, styles):
+def echo(text, styles=DEFAULT_STYLES):
+    print(styled(text, styles))
+
+
+def styled(text, styles=DEFAULT_STYLES):
     # Custom styles
     for tag, value in styles.items():
         text = text.replace(tag, value)
@@ -147,5 +154,24 @@ def styled(text, styles):
         .replace("<fg:lcyan>", Fore.LIGHTCYAN_EX) \
         .replace("<fg:lwhite>", Fore.LIGHTWHITE_EX) \
         .replace("</fg>", Fore.RESET)
+
+    text = text \
+        .replace("<bg:black>", Back.BLACK) \
+        .replace("<bg:red>", Back.RED) \
+        .replace("<bg:green>", Back.GREEN) \
+        .replace("<bg:yellow>", Back.YELLOW) \
+        .replace("<bg:blue>", Back.BLUE) \
+        .replace("<bg:magenta>", Back.MAGENTA) \
+        .replace("<bg:cyan>", Back.CYAN) \
+        .replace("<bg:white>", Back.WHITE) \
+        .replace("<bg:lblack>", Back.LIGHTBLACK_EX) \
+        .replace("<bg:lred>", Back.LIGHTRED_EX) \
+        .replace("<bg:lgreen>", Back.LIGHTGREEN_EX) \
+        .replace("<bg:lyellow>", Back.LIGHTYELLOW_EX) \
+        .replace("<bg:lblue>", Back.LIGHTBLUE_EX) \
+        .replace("<bg:lmagenta>", Back.LIGHTMAGENTA_EX) \
+        .replace("<bg:lcyan>", Back.LIGHTCYAN_EX) \
+        .replace("<bg:lwhite>", Back.LIGHTWHITE_EX) \
+        .replace("</bg>", Back.RESET)
 
     return text
