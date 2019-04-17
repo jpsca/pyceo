@@ -33,7 +33,7 @@ class HelpMixin(object):
     styles = DEFAULT_STYLES
 
     def echo(self, text):
-        echo(text, self.styles)
+        echo(text, styles=self.styles)
 
     def show_error(self, msg):
         error_msg = f"ERROR: {msg}"
@@ -122,7 +122,8 @@ class HelpMixin(object):
         return "".join(msg) + "\n"
 
 
-def echo(text, styles=DEFAULT_STYLES):
+def echo(*texts, sep=" ", styles=DEFAULT_STYLES):
+    text = sep.join(texts)
     print(styled(text, styles))
 
 

@@ -53,7 +53,10 @@ class Command(object):
         self.options = getattr(func, "options", [])
 
     def __call__(self, *args, **opts):
-        return self.func(*args, **opts)
+        try:
+            return self.func(*args, **opts)
+        except KeyboardInterrupt:
+            print()
 
     def run(self, *args, **opts):
         for key in opts:
