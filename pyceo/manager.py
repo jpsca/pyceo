@@ -5,6 +5,7 @@ Create management scripts for your applications so you can do
 things like `python manage.py runserver`.
 
 """
+from pathlib import Path
 import sys
 
 from .command import Command, HELP_COMMANDS
@@ -34,7 +35,8 @@ class Manager(HelpMixin):
             Name of default command to run if no arguments are passed.
 
         """
-        self.parent, *sys_args = sys.argv
+        parent, *sys_args = sys.argv
+        self.parent = Path(parent).stem
         cmd_name = default
         if sys_args:
             cmd_name, *sys_args = sys_args
