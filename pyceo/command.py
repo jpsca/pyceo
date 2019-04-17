@@ -67,15 +67,14 @@ class Command(object):
         len_args = len(args)
         len_params = len(self.params)
         if len_args != len_params:
-            self.show_args_error(args, opts)
+            if len_args > len_params:
+                self.manager.show_error("Too many arguments")
+            else:
+                self.manager.show_error("Missing arguments")
             self.show_help()
             return
 
         return self(*args, **opts)
-
-    def show_args_error(self, args, opts):
-        msg = "Invalid number of arguments or options."
-        self.manager.show_error(msg)
 
     def show_help(self):
         self.manager.show_help_command(self)

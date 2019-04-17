@@ -103,7 +103,7 @@ class HelpMixin(object):
         msg.append(usage + "\n")
 
         if cmd.params:
-            msg.append("\n<h2>Parameters</h2>\n")
+            msg.append("\n<h2>Arguments</h2>\n")
 
             col_size = self.get_col_size(cmd.params)
             for param in cmd.params:
