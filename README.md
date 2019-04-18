@@ -1,7 +1,6 @@
+# ![pyceo](https://github.com/jpscaletti/pyceo/raw/master/pyceo.png)
 
-# pyceo
-
-*It looks good and delegate all the work to you* ;)
+*It looks good and delegates all the real work to you* ;)
 
 A minimal and ridiculously good looking command-line-interface toolkit.
 
