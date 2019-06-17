@@ -1,3 +1,0 @@
-pytest >=4.0
-tox >=3.7
-flake8 >=3.7

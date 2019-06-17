@@ -1,5 +1,6 @@
 import sys
-import pyceo
+
+from .. import pyceo
 
 
 def test_intro_in_help(capsys):

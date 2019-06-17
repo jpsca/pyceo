@@ -1,4 +1,4 @@
-from pyceo import Manager, param, option
+from .pyceo import Manager, param, option
 
 
 cli = Manager("Welcome to Proper v1.2.3")

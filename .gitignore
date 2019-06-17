@@ -1,14 +1,37 @@
-~*
-.DS_Store
-*.pyc
-build
-dist
-*.egg*
-.idea
-
-covreport/*
-.tox
-htmlcov
+# Byte-compiled / optimized / DLL files
 __pycache__
-*.sublime-*
+*.py[cod]
+*$py.class
+*.so
 
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environments
+.env
+.venv
+covreport
+pip-wheel-metadata
+.tox
+
+# Documentation
+*/_build/*
+*/site/*
+*/.mypy_cache/*
+.cache

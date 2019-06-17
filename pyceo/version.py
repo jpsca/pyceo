@@ -1,4 +1,8 @@
 import pkg_resources
 
 
-__version__ = pkg_resources.require("pyceo")[0].version
+try:
+    __version__ = pkg_resources.require("pyceo")[0].version
+except Exception:  # pragma:no cover
+    # Run pytest without needing to install the library
+    __version__ = None
