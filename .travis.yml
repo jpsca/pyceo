@@ -10,6 +10,7 @@ matrix:
   allow_failures:
     - python: 'nightly'
 
-before_install: pip install -U pip
+before_install: pip install -U pip coveralls
 install: pip install .[testing]
-script: pytest -x pyceo tests
+script: pytest --cov pyceo pyceo tests
+after_success: coveralls

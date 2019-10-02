@@ -1,4 +1,4 @@
-# ![pyceo](https://github.com/jpscaletti/pyceo/raw/master/pyceo.png)
+# ![pyceo](https://github.com/jpscaletti/pyceo/raw/master/pyceo.png) [![Tests](https://travis-ci.org/jpscaletti/pyceo.svg?branch=master)](https://travis-ci.org/jpscaletti/pyceo/) [![Coverage Status](https://coveralls.io/repos/github/jpscaletti/pyceo/badge.svg?branch=master)](https://coveralls.io/github/jpscaletti/pyceo?branch=master) 
 
 *It looks good and delegates all the real work to you* ;)
 

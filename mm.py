@@ -25,11 +25,13 @@ data = {
     ],
     "testing_requires": [
         "pytest",
+        "pytest-cov",
     ],
     "development_requires": [
+        "pytest",
+        "pytest-cov",
         "tox",
         "flake8",
-        "pytest-cov",
     ],
     "entry_points": "copier = copier.cli:run",
 
