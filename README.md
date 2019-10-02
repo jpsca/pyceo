@@ -41,9 +41,10 @@ def new(path):
 
 
 @cli.command()
-def fizzbuzz():
-    """The infamous fizz buzz."""
-    pass
+@option("num", type=int)  # Optional type
+def fizzbuzz(num=3):
+    """A bad fizz buzz."""
+    print("fizz " * num + "buzz")
 
 
 @cli.command(group="db")

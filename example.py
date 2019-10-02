@@ -18,21 +18,16 @@ def new(path):
 
 
 @cli.command()
-def fizzbuzz():
-    """The infamous fizz buzz."""
-    pass
+@option("num", type=int)  # Optional type
+def fizzbuzz(num=3):
+    """A bad fizz buzz."""
+    print("fizz " * num + "buzz")
 
 
 @cli.command(group="db")
 @option("message", help="Revision message")
 @option("sql", help="Dont emit SQL to database - dump to standard output instead")
 @option("head", help="Specify head or <branchname>@head to base new revision on")
-@option("splice", help="Allow a non-head revision as the 'head' to splice onto")
-@option("branch-label", help="Specify a branch label to apply to the new revision")
-@option("version-path", help="Specify specific path from config for version file")
-@option("rev-id", help="Specify a hardcoded revision id instead of generating one")
-@option("name", help="Name of section in .ini file to use for Alembic config")
-@option("x", help="Additional arguments consumed by custom env.py scripts")
 def migrate(**kwargs):
     """Autogenerate a new revision file.
 
@@ -41,9 +36,7 @@ def migrate(**kwargs):
 
 
 @cli.command(group="db")
-@option("verbose", help="Use more verbose output")
 @option("name", help="Name of section in .ini file to use for Alembic config")
-@option("x-arg", help="Additional arguments consumed by custom env.py scripts")
 def branches(**kwargs):
     """Show current branch points.
     """
