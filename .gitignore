@@ -31,7 +31,8 @@ pip-wheel-metadata
 .tox
 
 # Documentation
-*/_build/*
-*/site/*
-*/.mypy_cache/*
+_build/*
+site/*
+.mypy_cache/*
+*.log
 .cache

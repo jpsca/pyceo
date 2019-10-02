@@ -113,7 +113,9 @@ class HelpMixin(object):
             msg.append("\n<h2>Options</h2>\n")
 
             col_size = self.get_col_size(cmd.options, attr="title")
-            for op in cmd.options:
+            # Reversed to preserve the apparent order
+            options = reversed(cmd.options.values())
+            for op in options:
                 msg.append(self.help_line_item(op.title, op.help, col_size))
 
         msg.append("\n<h2>Description</h2>\n")

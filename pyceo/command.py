@@ -50,13 +50,30 @@ class Command(object):
         # @param or @option decorators could have already been executed
         # to the bare function
         self.params = getattr(func, "params", [])
-        self.options = getattr(func, "options", [])
+        self.options = getattr(func, "options", {})
 
     def __call__(self, *args, **opts):
         try:
             return self.func(*args, **opts)
         except KeyboardInterrupt:
             print()
+
+    def _filter_options(self, opts):
+        parsed_opts = {}
+
+        for key, value in opts.items():
+            _option = self.options.get(key)
+            if not _option:
+                continue
+            if _option.type is not None:
+                try:
+                    value = _option.type(value)
+                except (TypeError, ValueError):
+                    self.manager.show_error(f"Wrong argument for `{key}`")
+                    raise
+            parsed_opts[key] = value
+
+        return parsed_opts
 
     def run(self, *args, **opts):
         for key in opts:
@@ -72,6 +89,11 @@ class Command(object):
             else:
                 self.manager.show_error("Missing arguments")
             self.show_help()
+            return
+
+        try:
+            opts = self._filter_options(opts)
+        except (TypeError, ValueError):
             return
 
         return self(*args, **opts)
