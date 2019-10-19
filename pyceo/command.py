@@ -57,6 +57,8 @@ class Command(object):
             return self.func(*args, **opts)
         except KeyboardInterrupt:
             print()
+        except TypeError as error:
+            self.manager.show_error(error.args[0])
 
     def _filter_options(self, opts):
         parsed_opts = {}
@@ -80,16 +82,6 @@ class Command(object):
             if key.lstrip("-") in HELP_COMMANDS:
                 self.show_help()
                 return
-
-        len_args = len(args)
-        len_params = len(self.params)
-        if len_args != len_params:
-            if len_args > len_params:
-                self.manager.show_error("Too many arguments")
-            else:
-                self.manager.show_error("Missing arguments")
-            self.show_help()
-            return
 
         try:
             opts = self._filter_options(opts)

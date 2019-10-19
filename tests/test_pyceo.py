@@ -27,10 +27,26 @@ def test_error_too_many_args(capsys):
 
     captured = capsys.readouterr()
     print(captured.out)
-    assert "Too many arguments" in captured.out
+    assert "hello() takes 0 positional arguments but 1 was given" in captured.out
 
 
 def test_error_missing_args(capsys):
+    cli = Manager()
+
+    @cli.command()
+    @param("path")
+    def hello(path):
+        pass
+
+    sys.argv = ["manage.py", "hello"]
+    cli.run()
+
+    captured = capsys.readouterr()
+    print(captured.out)
+    assert "hello() missing 1 required positional argument" in captured.out
+
+
+def test_missing_args_with_defaults_is_not_an_error(capsys):
     cli = Manager()
 
     @cli.command()
@@ -43,7 +59,7 @@ def test_error_missing_args(capsys):
 
     captured = capsys.readouterr()
     print(captured.out)
-    assert "Missing arguments" in captured.out
+    assert "ERROR" not in captured.out
 
 
 def test_error_wrong_option_type(capsys):
