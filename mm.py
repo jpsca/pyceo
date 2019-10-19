@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 """
-COPY THIS FILE TO YOUR PROJECT.
----------
 This file generates all the necessary files for packaging for the project.
 Read more about it at https://github.com/jpscaletti/mastermold/
 """
@@ -28,8 +26,6 @@ data = {
         "pytest-cov",
     ],
     "development_requires": [
-        "pytest",
-        "pytest-cov",
         "tox",
         "flake8",
     ],
@@ -39,30 +35,23 @@ data = {
     ]
 }
 
-exclude = [
-    "copier.yml",
-    "README.md",
-    ".git",
-    ".git/*",
-    ".venv",
-    ".venv/*",
-
-    "CHANGELOG.md",
-    "CONTRIBUTING.md",
-]
-
 
 def do_the_thing():
-    import copier
+    import hecto
 
-    copier.copy(
+    hecto.copy(
         # "gh:jpscaletti/mastermold.git",
         "../mastermold",  # Path to the local copy of Master Mold
         ".",
         data=data,
-        exclude=exclude,
         force=False,
-        cleanup_on_error=False
+        exclude=[
+            ".*",
+            ".*/*",
+            "README.md",
+            "CHANGELOG.md",
+            "CONTRIBUTING.md",
+        ],
     )
 
 
