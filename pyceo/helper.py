@@ -74,15 +74,15 @@ class HelpMixin(object):
             <h2>Available Commands</h2>""")
         ]
 
-        for title, commands in self.command_groups.items():
-            msg.append(self.help_commands_group(title, commands))
+        for header, commands in self.command_groups.items():
+            msg.append(self.help_commands_group(header, commands))
 
         return "".join(msg)
 
-    def help_commands_group(self, title, commands):
+    def help_commands_group(self, header, commands):
         msg = ["\n"]
-        if title:
-            msg.append(f" <h3>{title}</h3>\n")
+        if header:
+            msg.append(f" <h3>{header}</h3>\n")
 
         col_size = self.get_col_size(commands)
         for cmd in commands:
@@ -111,12 +111,11 @@ class HelpMixin(object):
 
         if cmd.options:
             msg.append("\n<h2>Options</h2>\n")
-
-            col_size = self.get_col_size(cmd.options, attr="title")
             # Reversed to preserve the apparent order
-            options = reversed(cmd.options.values())
+            options = reversed(list(cmd.options.values()))
+            col_size = self.get_col_size(options, attr="header")
             for op in options:
-                msg.append(self.help_line_item(op.title, op.help, col_size))
+                msg.append(self.help_line_item(op.header, op.help, col_size))
 
         msg.append("\n<h2>Description</h2>\n")
         msg.append(cmd.description)

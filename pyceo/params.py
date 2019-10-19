@@ -12,7 +12,7 @@ class Param(object):
         self.type = type
 
     @property
-    def title(self):
+    def header(self):
         if len(self.name) == 1:
             return "-" + self.full_name
         return "--" + self.full_name
