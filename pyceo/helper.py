@@ -11,16 +11,12 @@ colorama.init()
 DEFAULT_STYLES = {
     "<h2>": "<op:bright><fg:yellow>",
     "</h2>": "</op></fg>",
-
     "<h3>": "<fg:cyan>",
     "</h3>": "</fg>",
-
     "<b>": "<op:bright>",
     "</b>": "</op>",
-
     "<cmd>": "<fg:lgreen>",
     "</cmd>": "</fg>",
-
     "<error>": "<op:bright><fg:red>",
     "</error>": "</op></fg>",
 }
@@ -63,7 +59,8 @@ class HelpMixin(object):
 
     def help_root(self):
         msg = [
-            textwrap.dedent(f"""
+            textwrap.dedent(
+                f"""
             {self.intro}
 
             <h2>Usage</h2>
@@ -71,7 +68,8 @@ class HelpMixin(object):
 
               All commands can be run with -h (or --help) for more information.
 
-            <h2>Available Commands</h2>""")
+            <h2>Available Commands</h2>"""
+            )
         ]
 
         for header, commands in self.command_groups.items():
@@ -112,7 +110,7 @@ class HelpMixin(object):
         if cmd.options:
             msg.append("\n<h2>Options</h2>\n")
             # Reversed to preserve the apparent order
-            options = reversed(list(cmd.options.values()))
+            options = [op for op in reversed([value for value in cmd.options.values()])]
             col_size = self.get_col_size(options, attr="header")
             for op in options:
                 msg.append(self.help_line_item(op.header, op.help, col_size))
@@ -133,47 +131,50 @@ def styled(text, styles=DEFAULT_STYLES):
     for tag, value in styles.items():
         text = text.replace(tag, value)
 
-    text = text \
-        .replace("<op:bright>", Style.BRIGHT) \
-        .replace("<op:dim>", Style.DIM) \
+    text = (
+        text.replace("<op:bright>", Style.BRIGHT)
+        .replace("<op:dim>", Style.DIM)
         .replace("</op>", Style.RESET_ALL)
+    )
 
-    text = text \
-        .replace("<fg:black>", Fore.BLACK) \
-        .replace("<fg:red>", Fore.RED) \
-        .replace("<fg:green>", Fore.GREEN) \
-        .replace("<fg:yellow>", Fore.YELLOW) \
-        .replace("<fg:blue>", Fore.BLUE) \
-        .replace("<fg:magenta>", Fore.MAGENTA) \
-        .replace("<fg:cyan>", Fore.CYAN) \
-        .replace("<fg:white>", Fore.WHITE) \
-        .replace("<fg:lblack>", Fore.LIGHTBLACK_EX) \
-        .replace("<fg:lred>", Fore.LIGHTRED_EX) \
-        .replace("<fg:lgreen>", Fore.LIGHTGREEN_EX) \
-        .replace("<fg:lyellow>", Fore.LIGHTYELLOW_EX) \
-        .replace("<fg:lblue>", Fore.LIGHTBLUE_EX) \
-        .replace("<fg:lmagenta>", Fore.LIGHTMAGENTA_EX) \
-        .replace("<fg:lcyan>", Fore.LIGHTCYAN_EX) \
-        .replace("<fg:lwhite>", Fore.LIGHTWHITE_EX) \
+    text = (
+        text.replace("<fg:black>", Fore.BLACK)
+        .replace("<fg:red>", Fore.RED)
+        .replace("<fg:green>", Fore.GREEN)
+        .replace("<fg:yellow>", Fore.YELLOW)
+        .replace("<fg:blue>", Fore.BLUE)
+        .replace("<fg:magenta>", Fore.MAGENTA)
+        .replace("<fg:cyan>", Fore.CYAN)
+        .replace("<fg:white>", Fore.WHITE)
+        .replace("<fg:lblack>", Fore.LIGHTBLACK_EX)
+        .replace("<fg:lred>", Fore.LIGHTRED_EX)
+        .replace("<fg:lgreen>", Fore.LIGHTGREEN_EX)
+        .replace("<fg:lyellow>", Fore.LIGHTYELLOW_EX)
+        .replace("<fg:lblue>", Fore.LIGHTBLUE_EX)
+        .replace("<fg:lmagenta>", Fore.LIGHTMAGENTA_EX)
+        .replace("<fg:lcyan>", Fore.LIGHTCYAN_EX)
+        .replace("<fg:lwhite>", Fore.LIGHTWHITE_EX)
         .replace("</fg>", Fore.RESET)
+    )
 
-    text = text \
-        .replace("<bg:black>", Back.BLACK) \
-        .replace("<bg:red>", Back.RED) \
-        .replace("<bg:green>", Back.GREEN) \
-        .replace("<bg:yellow>", Back.YELLOW) \
-        .replace("<bg:blue>", Back.BLUE) \
-        .replace("<bg:magenta>", Back.MAGENTA) \
-        .replace("<bg:cyan>", Back.CYAN) \
-        .replace("<bg:white>", Back.WHITE) \
-        .replace("<bg:lblack>", Back.LIGHTBLACK_EX) \
-        .replace("<bg:lred>", Back.LIGHTRED_EX) \
-        .replace("<bg:lgreen>", Back.LIGHTGREEN_EX) \
-        .replace("<bg:lyellow>", Back.LIGHTYELLOW_EX) \
-        .replace("<bg:lblue>", Back.LIGHTBLUE_EX) \
-        .replace("<bg:lmagenta>", Back.LIGHTMAGENTA_EX) \
-        .replace("<bg:lcyan>", Back.LIGHTCYAN_EX) \
-        .replace("<bg:lwhite>", Back.LIGHTWHITE_EX) \
+    text = (
+        text.replace("<bg:black>", Back.BLACK)
+        .replace("<bg:red>", Back.RED)
+        .replace("<bg:green>", Back.GREEN)
+        .replace("<bg:yellow>", Back.YELLOW)
+        .replace("<bg:blue>", Back.BLUE)
+        .replace("<bg:magenta>", Back.MAGENTA)
+        .replace("<bg:cyan>", Back.CYAN)
+        .replace("<bg:white>", Back.WHITE)
+        .replace("<bg:lblack>", Back.LIGHTBLACK_EX)
+        .replace("<bg:lred>", Back.LIGHTRED_EX)
+        .replace("<bg:lgreen>", Back.LIGHTGREEN_EX)
+        .replace("<bg:lyellow>", Back.LIGHTYELLOW_EX)
+        .replace("<bg:lblue>", Back.LIGHTBLUE_EX)
+        .replace("<bg:lmagenta>", Back.LIGHTMAGENTA_EX)
+        .replace("<bg:lcyan>", Back.LIGHTCYAN_EX)
+        .replace("<bg:lwhite>", Back.LIGHTWHITE_EX)
         .replace("</bg>", Back.RESET)
+    )
 
     return text
