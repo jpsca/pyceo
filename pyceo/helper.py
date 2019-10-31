@@ -88,8 +88,9 @@ class HelpMixin(object):
 
         return "".join(msg)
 
-    def help_line_item(self, name, help, col_size=MIN_COL_SIZE):
-        return f"  <cmd>{name.ljust(col_size)}</cmd> {help}\n"
+    def help_line_item(self, name, cmd_help, col_size=MIN_COL_SIZE):
+        cmd_help = cmd_help.strip().split("\n")[0]
+        return f"  <cmd>{name.ljust(col_size)}</cmd> {cmd_help}\n"
 
     def help_command(self, cmd):
         msg = ["\n<h2>Usage</h2>\n"]
