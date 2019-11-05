@@ -52,12 +52,14 @@ class Command(object):
         self.params = getattr(func, "params", [])
         self.options = getattr(func, "options", {})
 
-    def __call__(self, *args, **opts):
+    def __call__(self, *args, catch_errors=True, **opts):
         try:
             return self.func(*args, **opts)
         except KeyboardInterrupt:
             print()
         except TypeError as error:
+            if not catch_errors:
+                raise
             self.manager.show_error(error.args[0])
 
     def _filter_options(self, opts):
@@ -77,7 +79,7 @@ class Command(object):
 
         return parsed_opts
 
-    def run(self, *args, **opts):
+    def run(self, *args, catch_errors=True, **opts):
         for key in opts:
             if key.lstrip("-") in HELP_COMMANDS:
                 self.show_help()
@@ -88,7 +90,7 @@ class Command(object):
         except (TypeError, ValueError):
             return
 
-        return self(*args, **opts)
+        return self(*args, catch_errors=catch_errors, **opts)
 
     def show_help(self):
         self.manager.show_help_command(self)

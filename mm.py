@@ -7,7 +7,7 @@ data = {
     "title": "pyceo",
     "name": "pyceo",
     "pypi_name": "pyceo",
-    "version": "2.191031",
+    "version": "2.191105",
     "author": "Juan-Pablo Scaletti",
     "author_email": "juanpablo@jpscaletti.com",
     "description": "A minimal and ridiculously good looking command-line-interface toolkit.",

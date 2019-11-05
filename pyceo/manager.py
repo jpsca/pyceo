@@ -20,8 +20,9 @@ class Manager(HelpMixin):
 
     parent = ""
 
-    def __init__(self, intro=""):
+    def __init__(self, intro="", catch_errors=True):
         self.intro = intro
+        self.catch_errors = catch_errors
         self.commands = {}
         self.command_groups = {None: []}
 
@@ -52,7 +53,7 @@ class Manager(HelpMixin):
             return
 
         args, opts = parse_args(sys_args)
-        return command.run(*args, **opts)
+        return command.run(*args, catch_errors=self.catch_errors, **opts)
 
     def command(self, group=None, help="", name=None):
         """Decorator for adding a command to this manager."""
