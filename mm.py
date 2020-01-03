@@ -7,7 +7,7 @@ data = {
     "title": "pyceo",
     "name": "pyceo",
     "pypi_name": "pyceo",
-    "version": "2.191105",
+    "version": "2.200103",
     "author": "Juan-Pablo Scaletti",
     "author_email": "juanpablo@jpscaletti.com",
     "description": "A minimal and ridiculously good looking command-line-interface toolkit.",
@@ -19,7 +19,7 @@ data = {
     "development_status": "5 - Production/Stable",
     "minimal_python": 3.6,
     "install_requires": [
-        "colorama ~= 0.4.1",
+        "colorama ~= 0.4",
     ],
     "testing_requires": [
         "pytest",
