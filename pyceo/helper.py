@@ -59,17 +59,14 @@ class HelpMixin(object):
 
     def help_root(self):
         msg = [
-            textwrap.dedent(
-                f"""
-            {self.intro}
-
+            textwrap.dedent(self.intro), "\n",
+            textwrap.dedent(f"""
             <h2>Usage</h2>
               {self.parent} <command> [<arg1>]...[<argN>] [--<op1>]...[--<opN>]
 
               All commands can be run with -h (or --help) for more information.
 
-            <h2>Available Commands</h2>"""
-            )
+            <h2>Available Commands</h2>""")
         ]
 
         for header, commands in self.command_groups.items():
