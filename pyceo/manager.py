@@ -36,17 +36,17 @@ class Manager(HelpMixin):
         """
         parent, *sys_args = sys.argv
         self.parent = Path(parent).stem
-        cmd_name = default
+        cname = default
         if sys_args:
-            cmd_name, *sys_args = sys_args
+            cname, *sys_args = sys_args
 
-        if cmd_name is None or cmd_name.lstrip("-") in HELP_COMMANDS:
+        if cname is None or cname.lstrip("-") in HELP_COMMANDS:
             self.show_help_root()
             return
 
-        command = self.commands.get(cmd_name)
+        command = self.commands.get(cname)
         if command is None:
-            self.show_error(f"command `{cmd_name}` not found")
+            self.show_error(f"command `{cname}` not found")
             self.show_help_root()
             return
 
@@ -61,19 +61,20 @@ class Manager(HelpMixin):
 
     def add_command(self, func, group=None, help="", name=None):
         name = name or func.__name__
+        cgroup = group
 
-        if group:
-            name = group + ":" + name.split(":", 1)[-1]
+        if cgroup:
+            name = cgroup + ":" + name.split(":", 1)[-1]
         elif ":" in name:
-            group = name.split(":", 1)[0]
+            cgroup = name.split(":", 1)[0]
 
         cmd = Command(func, name=name, help=help)
         cmd.manager = self
         cmd.__doc__ = func.__doc__
 
         self.commands[name] = cmd
-        self.command_groups.setdefault(group, [])
-        self.command_groups[group].append(cmd)
+        self.command_groups.setdefault(cgroup, [])
+        self.command_groups[cgroup].append(cmd)
 
         return cmd
 
@@ -82,13 +83,14 @@ class Manager(HelpMixin):
             self.add_command(cmd, group=group)
 
     def merge(self, cli, group=None):
-        for name, cmd in cli.commands.items():
-            if group:
-                name = group + ":" + name.split(":", 1)[-1]
-            elif ":" in name:
-                name, group = name.split(":", 1)
+        for cname, cmd in cli.commands.items():
+            cgroup = group
+            if cgroup:
+                cname = cgroup + ":" + cname.split(":", 1)[-1]
+            elif ":" in cname:
+                cgroup = cname.split(":", 1)[0]
 
-            self.commands[name] = cmd
-            self.command_groups.setdefault(group, [])
-            if cmd not in self.command_groups[group]:
-                self.command_groups[group].append(cmd)
+            self.commands[cname] = cmd
+            self.command_groups.setdefault(cgroup, [])
+            if cmd not in self.command_groups[cgroup]:
+                self.command_groups[cgroup].append(cmd)
