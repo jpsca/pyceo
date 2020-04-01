@@ -35,14 +35,9 @@ class Command(object):
 
     manager = None
 
-    def __init__(self, func, group=None, help="", name=None):
+    def __init__(self, func, help="", name=None):
         self.func = func
-
-        if not name:
-            name = func.__name__
-            if group:
-                name = f"{group}:{name}"
-        self.name = name
+        self.name = name or func.__name__
 
         self.description = (get_doc(func) or help).strip()
         self.help = help or self.description.split("\n", 1)[0]

@@ -7,15 +7,14 @@ data = {
     "title": "pyceo",
     "name": "pyceo",
     "pypi_name": "pyceo",
-    "version": "2.200204",
+    "version": "2.200401",
     "author": "Juan-Pablo Scaletti",
     "author_email": "juanpablo@jpscaletti.com",
     "description": "A minimal and ridiculously good looking command-line-interface toolkit.",
     "copyright": "2013",
     "repo_name": "jpscaletti/pyceo",
     "home_url": "",
-    "project_urls": {
-    },
+    "project_urls": {},
     "development_status": "5 - Production/Stable",
     "minimal_python": 3.6,
     "install_requires": [
@@ -29,10 +28,8 @@ data = {
         "tox",
         "flake8",
     ],
-    "entry_points": "copier = copier.cli:run",
-
-    "coverage_omit": [
-    ]
+    "entry_points": "",
+    "coverage_omit": []
 }
 
 

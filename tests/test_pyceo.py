@@ -93,3 +93,35 @@ def test_type_option(capsys):
     print(captured.out)
     assert "Port is <class 'int'>" in captured.out
     assert "Port is <class 'str'>" not in captured.out
+
+
+def test_group_in_name(capsys):
+    cli = Manager()
+    msg = "Hello world!"
+
+    @cli.command(name="foo:bar")
+    def hello():
+        print(msg)
+
+    sys.argv = ["manage.py", "foo:bar"]
+    cli.run()
+
+    captured = capsys.readouterr()
+    print(captured.out)
+    assert msg in captured.out
+
+
+def test_name_and_group_as_arg(capsys):
+    cli = Manager()
+    msg = "Hello world!"
+
+    @cli.command(group="foo", name="bar")
+    def hello():
+        print(msg)
+
+    sys.argv = ["manage.py", "foo:bar"]
+    cli.run()
+
+    captured = capsys.readouterr()
+    print(captured.out)
+    assert msg in captured.out

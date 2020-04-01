@@ -1,6 +1,4 @@
 """
-# pyceo.main
-
 Create management scripts for your applications so you can do
 things like `python manage.py runserver`.
 
@@ -62,20 +60,18 @@ class Manager(HelpMixin):
         return decorator
 
     def add_command(self, func, group=None, help="", name=None):
-        if isinstance(func, Command):
-            help = help or func.help
-            name = name or func.name
-            func = func.func
+        name = name or func.__name__
 
-        cmd = Command(func, group=group, help=help, name=name)
+        if group:
+            name = group + ":" + name.split(":", 1)[-1]
+        elif ":" in name:
+            group = name.split(":", 1)[0]
+
+        cmd = Command(func, name=name, help=help)
         cmd.manager = self
         cmd.__doc__ = func.__doc__
 
-        self.commands[cmd.name] = cmd
-
-        if group is None and ":" in cmd.name:
-            group = cmd.name.split(":", 1)[0]
-
+        self.commands[name] = cmd
         self.command_groups.setdefault(group, [])
         self.command_groups[group].append(cmd)
 
@@ -84,3 +80,15 @@ class Manager(HelpMixin):
     def add_commands(self, cmds, group=None):
         for cmd in cmds:
             self.add_command(cmd, group=group)
+
+    def merge(self, cli, group=None):
+        for name, cmd in cli.commands.items():
+            if group:
+                name = group + ":" + name.split(":", 1)[-1]
+            elif ":" in name:
+                name, group = name.split(":", 1)
+
+            self.commands[name] = cmd
+            self.command_groups.setdefault(group, [])
+            if cmd not in self.command_groups[group]:
+                self.command_groups[group].append(cmd)
