@@ -3,7 +3,7 @@ all: PHONY
 help:
 	@echo "clean - remove build/python artifacts"
 	@echo "test - run tests"
-	@echo "flake - check style with flake8"
+	@echo "lint - check style with flake8"
 	@echo "coverage - generate an HTML report of the coverage"
 	@echo "install - install for development"
 
@@ -26,7 +26,7 @@ clean-pyc:
 test:
 	pytest -x pyceo tests
 
-flake:
+lint:
 	flake8 --config=setup.cfg pyceo tests
 
 coverage:

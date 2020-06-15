@@ -7,7 +7,7 @@ data = {
     "title": "pyceo",
     "name": "pyceo",
     "pypi_name": "pyceo",
-    "version": "2.200401",
+    "version": "2.200615",
     "author": "Juan-Pablo Scaletti",
     "author_email": "juanpablo@jpscaletti.com",
     "description": "A minimal and ridiculously good looking command-line-interface toolkit.",
@@ -37,8 +37,8 @@ def do_the_thing():
     import hecto
 
     hecto.copy(
-        # "gh:jpscaletti/mastermold.git",
-        "../mastermold",  # Path to the local copy of Master Mold
+        "gh:jpscaletti/mastermold.git",
+        #"../mastermold",  # Path to the local copy of Master Mold
         ".",
         data=data,
         force=False,

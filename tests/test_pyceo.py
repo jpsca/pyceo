@@ -125,3 +125,24 @@ def test_name_and_group_as_arg(capsys):
     captured = capsys.readouterr()
     print(captured.out)
     assert msg in captured.out
+
+
+def test_no_repeated_names(capsys):
+    cli = Manager()
+
+    @cli.command(name="qwertyuiop", help="WRONG")
+    def a():
+        return "a"
+
+    @cli.command(name="qwertyuiop", help="RIGHT")
+    def b():
+        return "b"
+
+    sys.argv = ["manage.py", "help"]
+    cli.run()
+
+    captured = capsys.readouterr()
+    print(captured.out)
+    assert "qwertyuiop" in captured.out
+    assert "RIGHT" in captured.out
+    assert "WRONG" not in captured.out

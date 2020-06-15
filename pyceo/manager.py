@@ -22,7 +22,7 @@ class Manager(HelpMixin):
         self.intro = intro
         self.catch_errors = catch_errors
         self.commands = {}
-        self.command_groups = {None: []}
+        self.command_groups = {None: {}}
 
     def __call__(self, default=None):
         return self.run(default=default)
@@ -71,10 +71,7 @@ class Manager(HelpMixin):
         cmd.manager = self
         cmd.__doc__ = func.__doc__
 
-        self.commands[name] = cmd
-        self.command_groups.setdefault(group, [])
-        self.command_groups[group].append(cmd)
-
+        self._add_command_to_group(cmd, name, group)
         return cmd
 
     def add_commands(self, cmds, group=None):
@@ -87,8 +84,10 @@ class Manager(HelpMixin):
                 name = group + ":" + name.split(":", 1)[-1]
             elif ":" in name:
                 name, group = name.split(":", 1)
+            self._add_command_to_group(cmd, name, group)
 
-            self.commands[name] = cmd
-            self.command_groups.setdefault(group, [])
-            if cmd not in self.command_groups[group]:
-                self.command_groups[group].append(cmd)
+    def _add_command_to_group(self, cmd, name, group):
+        self.commands[name] = cmd
+        self.command_groups.setdefault(group, {})
+        if cmd not in self.command_groups[group]:
+            self.command_groups[group][name] = cmd

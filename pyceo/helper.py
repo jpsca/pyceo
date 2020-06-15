@@ -70,7 +70,7 @@ class HelpMixin(object):
         ]
 
         for header, commands in self.command_groups.items():
-            msg.append(self.help_commands_group(header, commands))
+            msg.append(self.help_commands_group(header, commands.values()))
 
         return "".join(msg)
 
