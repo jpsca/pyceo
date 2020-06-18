@@ -82,9 +82,10 @@ class Manager(HelpMixin):
         for name, cmd in cli.commands.items():
             if group:
                 name = group + ":" + name.split(":", 1)[-1]
+                self._add_command_to_group(cmd, name, group)
             elif ":" in name:
-                name, group = name.split(":", 1)
-            self._add_command_to_group(cmd, name, group)
+                _group, name = name.split(":", 1)
+                self._add_command_to_group(cmd, name, _group)
 
     def _add_command_to_group(self, cmd, name, group):
         self.commands[name] = cmd
