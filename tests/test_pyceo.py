@@ -146,3 +146,246 @@ def test_no_repeated_names(capsys):
     assert "qwertyuiop" in captured.out
     assert "RIGHT" in captured.out
     assert "WRONG" not in captured.out
+
+
+def test_merge(get_out_text):
+    cli = Manager()
+    cli2 = Manager()
+
+    @cli.command(help="AAA")
+    def a():
+        pass
+
+    @cli2.command(help="BBB")
+    def b():
+        pass
+
+    cli.merge(cli2)
+    sys.argv = ["manage.py", "help"]
+    cli.run()
+
+    assert """
+
+ Usage
+   manage <command> [<arg1>]...[<argN>] [--<op1>]...[--<opN>]
+
+   All commands can be run with -h (or --help) for more information.
+
+ Available Commands
+   a            AAA
+   b            BBB
+
+""" == get_out_text()
+
+
+def test_merge_groups(get_out_text):
+    cli = Manager()
+    cli2 = Manager()
+
+    @cli.command(help="AAA", name="foo:a")
+    def a():
+        pass
+
+    @cli2.command(help="BBB", name="bar:b")
+    def b():
+        pass
+
+    cli.merge(cli2)
+    sys.argv = ["manage.py", "help"]
+    cli.run()
+
+    assert """
+
+ Usage
+   manage <command> [<arg1>]...[<argN>] [--<op1>]...[--<opN>]
+
+   All commands can be run with -h (or --help) for more information.
+
+ Available Commands
+
+  foo
+   foo:a        AAA
+
+  bar
+   bar:b        BBB
+
+""" == get_out_text()
+
+
+def test_merge_same_group(get_out_text):
+    cli = Manager()
+    cli2 = Manager()
+
+    @cli.command(help="AAA", name="foo:a")
+    def a():
+        pass
+
+    @cli2.command(help="BBB", name="foo:b")
+    def b():
+        pass
+
+    cli.merge(cli2)
+    sys.argv = ["manage.py", "help"]
+    cli.run()
+
+    assert """
+
+ Usage
+   manage <command> [<arg1>]...[<argN>] [--<op1>]...[--<opN>]
+
+   All commands can be run with -h (or --help) for more information.
+
+ Available Commands
+
+  foo
+   foo:a        AAA
+   foo:b        BBB
+
+""" == get_out_text()
+
+
+def test_merge_to_group():
+    cli = Manager()
+    cli2 = Manager()
+
+    @cli.command(help="AAA", name="foo:a")
+    def a():
+        pass
+
+    @cli2.command(help="BBB")
+    def b():
+        pass
+
+    cli.merge(cli2, group="foo")
+    sys.argv = ["manage.py", "help"]
+    cli.run()
+
+#     assert """
+
+#  Usage
+#    manage <command> [<arg1>]...[<argN>] [--<op1>]...[--<opN>]
+
+#    All commands can be run with -h (or --help) for more information.
+
+#  Available Commands
+
+#   foo
+#    foo:a        AAA
+#    foo:b        BBB
+
+# """ == get_out_text()
+
+
+def test_merge_explicit_groups(get_out_text):
+    cli = Manager()
+    cli2 = Manager()
+
+    @cli.command(help="AAA", name="a", group="foo")
+    def a():
+        pass
+
+    @cli2.command(help="BBB", name="b", group="bar")
+    def b():
+        pass
+
+    cli.merge(cli2)
+    sys.argv = ["manage.py", "help"]
+    cli.run()
+
+    assert """
+
+ Usage
+   manage <command> [<arg1>]...[<argN>] [--<op1>]...[--<opN>]
+
+   All commands can be run with -h (or --help) for more information.
+
+ Available Commands
+
+  foo
+   foo:a        AAA
+
+  bar
+   bar:b        BBB
+
+""" == get_out_text()
+
+
+def test_add_command(get_out_text):
+    cli = Manager()
+
+    def a():
+        """AAA"""
+
+    def b():
+        """BBB"""
+
+    cli.add_commands([a, b])
+    sys.argv = ["manage.py", "help"]
+    cli.run()
+
+    assert """
+
+ Usage
+   manage <command> [<arg1>]...[<argN>] [--<op1>]...[--<opN>]
+
+   All commands can be run with -h (or --help) for more information.
+
+ Available Commands
+   a            AAA
+   b            BBB
+
+""" == get_out_text()
+
+
+def test_add_command_to_group(get_out_text):
+    cli = Manager()
+
+    def a():
+        """AAA"""
+
+    def b():
+        """BBB"""
+
+    cli.add_commands([a, b], group="foo")
+    sys.argv = ["manage.py", "help"]
+    cli.run()
+
+    assert """
+
+ Usage
+   manage <command> [<arg1>]...[<argN>] [--<op1>]...[--<opN>]
+
+   All commands can be run with -h (or --help) for more information.
+
+ Available Commands
+
+  foo
+   foo:a        AAA
+   foo:b        BBB
+
+""" == get_out_text()
+
+
+def test_add_command_with_data(get_out_text):
+    cli = Manager()
+
+    def a():
+        pass
+
+    cli.add_command(a, help="AAA", name="bar", group="foo")
+    sys.argv = ["manage.py", "help"]
+    cli.run()
+
+    assert """
+
+ Usage
+   manage <command> [<arg1>]...[<argN>] [--<op1>]...[--<opN>]
+
+   All commands can be run with -h (or --help) for more information.
+
+ Available Commands
+
+  foo
+   foo:bar      AAA
+
+""" == get_out_text()

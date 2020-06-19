@@ -80,15 +80,20 @@ class Manager(HelpMixin):
 
     def merge(self, cli, group=None):
         for name, cmd in cli.commands.items():
-            if group:
-                name = group + ":" + name.split(":", 1)[-1]
-                self._add_command_to_group(cmd, name, group)
-            elif ":" in name:
-                _group, name = name.split(":", 1)
-                self._add_command_to_group(cmd, name, _group)
+            self._merge_command(cmd, name, group)
+
+    def _merge_command(self, cmd, name, group):
+        if group:
+            name = group + ":" + name.split(":", 1)[-1]
+            cmd.name = name
+            self._add_command_to_group(cmd, name, group)
+        elif ":" in name:
+            group = name.split(":", 1)[0]
+            self._add_command_to_group(cmd, name, group)
+        else:
+            self._add_command_to_group(cmd, name, None)
 
     def _add_command_to_group(self, cmd, name, group):
         self.commands[name] = cmd
         self.command_groups.setdefault(group, {})
-        if cmd not in self.command_groups[group]:
-            self.command_groups[group][name] = cmd
+        self.command_groups[group][name] = cmd
