@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 """
 This file generates all the necessary files for packaging for the project.
-Read more about it at https://github.com/jpscaletti/mastermold/
+Read more about it at https://github.com/jpsca/mastermold/
 """
 data = {
     "title": "pyceo",
     "name": "pyceo",
     "pypi_name": "pyceo",
-    "version": "2.200619",
+    "version": "2.200628",
     "author": "Juan-Pablo Scaletti",
     "author_email": "juanpablo@jpscaletti.com",
     "description": "A minimal and ridiculously good looking command-line-interface toolkit.",
     "copyright": "2013",
-    "repo_name": "jpscaletti/pyceo",
+    "repo_name": "jpsca/pyceo",
     "home_url": "",
     "project_urls": {},
     "development_status": "5 - Production/Stable",
@@ -37,8 +37,8 @@ def do_the_thing():
     import hecto
 
     hecto.copy(
-        "gh:jpscaletti/mastermold.git",
-        #"../mastermold",  # Path to the local copy of Master Mold
+        # "gh:jpsca/mastermold.git",
+        "../mastermold",  # Path to the local copy of Master Mold
         ".",
         data=data,
         force=False,
@@ -46,8 +46,6 @@ def do_the_thing():
             ".*",
             ".*/*",
             "README.md",
-            "CHANGELOG.md",
-            "CONTRIBUTING.md",
         ],
     )
 
