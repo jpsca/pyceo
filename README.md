@@ -1,4 +1,9 @@
-# ![pyceo](https://github.com/jpsca/pyceo/raw/master/pyceo.png) [![Tests](https://travis-ci.org/jpsca/pyceo.svg?branch=master)](https://travis-ci.org/jpsca/pyceo/) [![Coverage Status](https://coveralls.io/repos/github/jpsca/pyceo/badge.svg?branch=master)](https://coveralls.io/github/jpsca/pyceo?branch=master) 
+<h1>
+<img alt="pyceo" src="https://raw.githubusercontent.com/jpsca/pyceo/master/pyceo.png">
+<a href="https://travis-ci.org/jpsca/pyceo/"><img src="https://travis-ci.org/jpsca/pyceo.svg?branch=master"  alt="Tests" align="right">
+</a>  
+<a href="https://coveralls.io/github/jpsca/pyceo?branch=master"><img src="https://coveralls.io/repos/github/jpsca/pyceo/badge.svg?branch=master" alt="Coverage Status" align="right"></a>
+</h1>
 
 *It looks good and delegates all the real work to you* ;)
 
