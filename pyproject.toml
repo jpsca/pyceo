@@ -1,5 +1,25 @@
+[tool.poetry]
+name = "pyceo"
+version = "2.200711"
+description = "A minimal and ridiculously good looking command-line-interface toolkit"
+authors = ["Juan-Pablo Scaletti <juanpablo@jpscaletti.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/jpsca/pyceo"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+colorama = "^0.4.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.4.3"
+pytest-cov = "^2.10.0"
+flake8 = "^3.8.3"
+
 [build-system]
-# These are the assumed default build requirements from pip:
-# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
-requires = ["setuptools>=40.8.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
