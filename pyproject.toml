@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyceo"
-version = "2.200711"
+version = "2.200716"
 description = "A minimal and ridiculously good looking command-line-interface toolkit"
 authors = ["Juan-Pablo Scaletti <juanpablo@jpscaletti.com>"]
 license = "Apache-2.0"

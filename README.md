@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
 ## How minimal?
 
-**pyceo** doesn't include any related features like prompts, progress bars, table formatting, [file editing](https://pypi.org/project/text-editor/), etc. It doesn't matter because for those features many dedicated python libraries can be used.
+**pyceo** include a `confirm()` and `ask()` utilities, but not any features like progress bars, table formatting, [file editing](https://pypi.org/project/text-editor/), etc. It doesn't matter because for those features many dedicated python libraries can be used.
 
 You could say it *focuses on its core competencies while synergetically interface with other libraries to take it to the next level*. 💪🚀
 
