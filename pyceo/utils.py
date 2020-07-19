@@ -49,4 +49,3 @@ def confirm(text, default=False, yes_choices=None, no_choices=None):
             return True
         if resp in no_choices:
             return False
-

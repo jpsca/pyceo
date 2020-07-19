@@ -4,13 +4,8 @@ python:
   - "3.6"
   - "3.7"
   - "3.8"
-  # - "nightly"
 
-# matrix:
-#   allow_failures:
-#     - python: "nightly"
-
-before_install: pip install poetry coveralls
-install: poetry install
-script: pytest --cov proper --cov tests .
+before_install: pip install -U pip coveralls
+install: pip install .[test]
+script: pytest --cov pyceo --cov tests .
 after_success: coveralls
