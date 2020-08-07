@@ -47,15 +47,15 @@ class Command(object):
         self.params = getattr(func, "params", [])
         self.options = getattr(func, "options", {})
 
-    def __call__(self, *args, catch_errors=True, **opts):
+    def __call__(self, *args, catch_errors=False, **opts):
         try:
             return self.func(*args, **opts)
         except KeyboardInterrupt:
             print()
         except TypeError as error:
+            self.manager.show_error(error.args[0])
             if not catch_errors:
                 raise
-            self.manager.show_error(error.args[0])
 
     def _filter_options(self, opts):
         parsed_opts = {}
@@ -69,22 +69,20 @@ class Command(object):
                     value = _option.type(value)
                 except (TypeError, ValueError):
                     self.manager.show_error(f"Wrong argument for `{key}`")
-                    raise
+                    return None
             parsed_opts[key] = value
 
         return parsed_opts
 
-    def run(self, *args, catch_errors=True, **opts):
+    def run(self, *args, catch_errors=False, **opts):
         for key in opts:
             if key.lstrip("-") in HELP_COMMANDS:
                 self.show_help()
                 return
 
-        try:
-            opts = self._filter_options(opts)
-        except (TypeError, ValueError):
+        opts = self._filter_options(opts)
+        if opts is None:
             return
-
         return self(*args, catch_errors=catch_errors, **opts)
 
     def show_help(self):

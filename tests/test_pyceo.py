@@ -1,5 +1,7 @@
 import sys
 
+import pytest
+
 from pyceo import Manager, param, option
 
 
@@ -16,7 +18,7 @@ def test_intro_in_help(capsys):
 
 
 def test_error_too_many_args(capsys):
-    cli = Manager()
+    cli = Manager(catch_errors=True)
 
     @cli.command()
     def hello():
@@ -31,7 +33,7 @@ def test_error_too_many_args(capsys):
 
 
 def test_error_missing_args(capsys):
-    cli = Manager()
+    cli = Manager(catch_errors=True)
 
     @cli.command()
     @param("path")

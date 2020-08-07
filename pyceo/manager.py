@@ -18,7 +18,7 @@ class Manager(HelpMixin):
 
     parent = ""
 
-    def __init__(self, intro="", catch_errors=True):
+    def __init__(self, intro="", catch_errors=False):
         self.intro = intro
         self.catch_errors = catch_errors
         self.commands = {}

@@ -36,9 +36,9 @@ def confirm(text, default=False, yes_choices=None, no_choices=None):
         options = f"{yes_choices[0]}|{no_choices[0]}"
     else:
         if default:
-            options = f"{yes_choices[0].title()}|{no_choices[0]}"
+            options = f"{yes_choices[0].title()}/{no_choices[0]}"
         else:
-            options = f"{yes_choices[0]}|{no_choices[0].title()}"
+            options = f"{yes_choices[0]}/{no_choices[0].title()}"
 
     while True:
         resp = ask(text, default=default_value, options=options)
