@@ -1,6 +1,4 @@
-
-
-def parse_args(cliargs):
+def parse_args(cliargs):  # noqa: C901
     """Parse the command line arguments and return a list of the positional
     arguments and a dictionary with the named ones.
 
