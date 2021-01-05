@@ -53,8 +53,12 @@ def test_main_help(get_out_text):
     assert """
  Hello World!
 
- Available Commands (run with --help for more information)
+ Usage:
+   manage <command> [args] [options]
 
+   Run any command with the --help option for more information.
+
+ Available Commands:
    a            AAA
    b            BBB
    foo
@@ -74,8 +78,12 @@ def test_subcommand_help(get_out_text):
     assert """
  Lorem ipsum is placeholder text commonly used for previewing layouts and visual mockups.
 
- Available Commands (run with --help for more information)
+ Usage:
+   manage lorem <command> [args] [options]
 
+   Run any command with the --help option for more information.
+
+ Available Commands:
    ipsum        IPSUM
    sit          SIT
 

@@ -71,10 +71,10 @@ class HelpMixin:
         if self._intro:
             intro = textwrap.indent(self._intro.strip(), " ")
             echo(f"\n{intro}")
-        echo(
-            "\n <fg:yellow>Available Commands</fg>"
-            " (run with --help for more information)\n"
-        )
+        echo("\n <fg:yellow>Usage:</fg>")
+        echo(f" {self._indent}{self._parent} <command> [args] [options]\n")
+        echo(f" {self._indent}Run any command with the --help option for more information.")
+        echo("\n <fg:yellow>Available Commands:</fg>")
 
     def _help_body(self):
         for name, cmd in self._commands.items():
@@ -83,14 +83,14 @@ class HelpMixin:
             self._help_list_subcommand(name, cls)
 
     def _help_list_subcommand(self, name, cls):
-        echo(f"{self._indent} <fg:cyan>{name.ljust(COL_SIZE)}</fg>")
-        cli = self._init_subcommand(cls, indent_level=self._indent_level + 1)
+        echo(f" {self._indent}<fg:cyan>{name.ljust(COL_SIZE)}</fg>")
+        cli = self._init_subcommand(name, cls, indent_level=self._indent_level + 1)
         cli._help_body()
 
     def _help_list_command(self, name, cmd):
         doc = cmd.__doc__ or ""
         cmd_help = doc.strip().split("\n")[0]
-        echo(f"{self._indent} <fg:lgreen>{name.ljust(COL_SIZE)}</fg> {cmd_help}")
+        echo(f" {self._indent}<fg:lgreen>{name.ljust(COL_SIZE)}</fg> {cmd_help}")
 
     def _help_command(self, cmd):
         print()

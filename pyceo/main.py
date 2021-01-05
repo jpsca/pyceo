@@ -12,9 +12,9 @@ INDENT_START_LEVEL = 1
 
 class Cli(HelpMixin):
     _intro = ""
-    _parent = ""
 
-    def __init__(self, *, indent_level=INDENT_START_LEVEL, **env):
+    def __init__(self, *, parent="", indent_level=INDENT_START_LEVEL, **env):
+        self._parent = parent
         self._indent_level = indent_level
         self._env = env
 
@@ -40,18 +40,22 @@ class Cli(HelpMixin):
             return self._command_not_found(name)
 
         if isclass(cmd):
-            return self._run_subcommand(cmd, args, opts)
+            return self._run_subcommand(name, cmd, args, opts)
         return self._run_command(cmd, args, opts)
 
     def _command_not_found(self, name):
         echo(f"\n💥 <fg:red><b>ERROR:</b> Command `{name}` not found</fg> 💥 ")
         self._help()
 
-    def _init_subcommand(self, cls, indent_level=INDENT_START_LEVEL):
-        return cls(indent_level=indent_level, **self._env)
+    def _init_subcommand(self, name, cls, indent_level=INDENT_START_LEVEL):
+        return cls(
+            parent=f"{self._parent} {name}",
+            indent_level=indent_level,
+            **self._env
+        )
 
-    def _run_subcommand(self, cls, args, opts):
-        cli = self._init_subcommand(cls)
+    def _run_subcommand(self, name, cls, args, opts):
+        cli = self._init_subcommand(name, cls)
         if not args:
             if not opts or opts == {HELP_OPT: True}:
                 return cli._help()

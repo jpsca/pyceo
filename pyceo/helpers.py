@@ -5,36 +5,40 @@ def echo(text="", aliases=STYLE_ALIASES):
     print(style(text, aliases=aliases))
 
 
-def ask(text, default=None, options=None):
+def ask(question, default=None, alternatives=None):
     """Ask a question via input() and return their answer.
 
     Arguments:
-    - text (str): Question text
+    - question (str): The text of the question.
     - default (any): Default value if no answer is provided.
-    - options (str): Options to display
+    - alternatives (str): Alternatives to display
     """
-    ops = options or default
-    text += f" [{str(ops)}] " if ops else ""
+    ops = alternatives or default
+    question += f" [{str(ops)}] " if ops else ""
     while True:
-        resp = input(text)
+        resp = input(question)
         if resp:
             return resp
         if default is not None:
             return default
 
 
-def confirm(text, default=False, yes_choices=None, no_choices=None):
-    """Ask a yes/no question via pycero.ask() and return their answer.
+YES_CHOICES = ('y', 'yes', 't', 'true', 'on', '1')
+NO_CHOICES = ('n', 'no', 'f', 'false', 'off', '0')
+
+
+def confirm(question, default=False, yes_choices=YES_CHOICES, no_choices=NO_CHOICES):
+    """Ask a yes/no question via pyceo.ask() and return their answer.
 
     Arguments:
-    - text (str): prompt text
-    - default (bool): default value if no answer is provided.
-    - yes_choices (list): default 'y', 'yes', '1', 'on', 'true', 't'
-    - no_choices (list): default 'n', 'no', '0', 'off', 'false', 'f'
+    - question (str): Prompt question
+    - default (bool): Default value if no answer is provided.
+    - yes_choices (list): Default 'y', 'yes', '1', 'on', 'true', 't'
+    - no_choices (list): Default 'n', 'no', '0', 'off', 'false', 'f'
 
     """
-    yes_choices = yes_choices or ('y', 'yes', 't', 'true', 'on', '1')
-    no_choices = no_choices or ('n', 'no', 'f', 'false', 'off', '0')
+    yes_choices = yes_choices or YES_CHOICES
+    no_choices = no_choices or NO_CHOICES
 
     default_value = yes_choices[0] if default else no_choices[0]
     if default is None:
@@ -46,7 +50,7 @@ def confirm(text, default=False, yes_choices=None, no_choices=None):
             options = f"{yes_choices[0]}/{no_choices[0].title()}"
 
     while True:
-        resp = ask(text, default=default_value, options=options)
+        resp = ask(question, default=default_value, options=options)
         if default is not None:
             resp = resp or str(default)
         resp = resp.lower()
