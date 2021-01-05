@@ -7,7 +7,10 @@ import pytest
 def get_out_text(capsys):
     def out_text():
         out = capsys.readouterr().out
-        return strip_non_visible(out)
+        out = strip_non_visible(out)
+        print(out)
+        return out
+
     return out_text
 
 

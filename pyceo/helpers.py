@@ -1,8 +1,14 @@
+from .markup import style, STYLE_ALIASES
+
+
+def echo(text="", aliases=STYLE_ALIASES):
+    print(style(text, aliases=aliases))
+
+
 def ask(text, default=None, options=None):
     """Ask a question via input() and return their answer.
 
-    Parameters:
-
+    Arguments:
     - text (str): Question text
     - default (any): Default value if no answer is provided.
     - options (str): Options to display
@@ -20,8 +26,7 @@ def ask(text, default=None, options=None):
 def confirm(text, default=False, yes_choices=None, no_choices=None):
     """Ask a yes/no question via pycero.ask() and return their answer.
 
-    Parameters:
-
+    Arguments:
     - text (str): prompt text
     - default (bool): default value if no answer is provided.
     - yes_choices (list): default 'y', 'yes', '1', 'on', 'true', 't'

@@ -1,20 +1,71 @@
 <h1>
 <img alt="pyceo" src="https://raw.githubusercontent.com/jpsca/pyceo/master/pyceo.png">
-<a href="https://travis-ci.org/jpsca/pyceo/"><img src="https://travis-ci.org/jpsca/pyceo.svg?branch=master"  alt="Tests" align="right">
-</a>  
-<a href="https://coveralls.io/github/jpsca/pyceo?branch=master"><img src="https://coveralls.io/repos/github/jpsca/pyceo/badge.svg?branch=master" alt="Coverage Status" align="right"></a>
 </h1>
 
-*It looks good and delegates all the real work to you* ;)
+A minimal, composable, reusable, and ridiculously good looking command-line-**user**-interface toolkit.
 
-A minimal and ridiculously good looking command-line-interface toolkit.
+- Made for interacting with humans
+- No need to redeclare paramaters and options with decorators, just write Python methods.
+- The help of a command is its docstring.
+- Customizable main help page, but pretty by default.
 
-In four points:
+## Usage
 
-- Completely customizable help page, but pretty by default.
-- Add new commands at any time and from other files.
-- No sub-commands but grouping of commands instead.
-- Easy to use and understand.
+Declare a class that inherits from `pyceo.Cli`. Every method/attribute that does not starts with an underscore will be a command.
+
+```python
+from pyceo import Cli
+
+class Manage(Cli):
+    def first_command(self, arg1, arg2=3):
+        pass
+
+    def second_command(self):
+        pass
+
+    def _not_a_command(self):
+        pass
+```
+
+Then, instance that class and call it.
+
+```python
+cli = Manage()
+
+if __name__ == "__main__":
+    cli()
+```
+
+You can add a `_intro` attribute to use as a message at the beginning of the help page.
+
+
+### Subcommands
+
+If an attribute is a subclass of `pyceo.Cli`, it will be a subcommand:
+
+```python
+from pyceo import Cli
+
+class DBSub(Cli):
+    def migrate(self):
+        pass
+
+class Manage(Cli):
+    # A subcommand
+    db = DBSub  # **NOT** `DBSub()`
+```
+
+### Context
+
+You can pass any named argument as context to be used by your commands. This will be stored at the `_env` attribute.
+
+Example:
+
+```python
+>>> cli = Manage(lorem="ipsum")
+>>> print(cli._env)
+{"lorem": "ipsum"}
+```
 
 
 ## An example
@@ -26,74 +77,128 @@ the example below:
 
 ```python
 # example.py
-from pyceo import Manager, param, option
+from pyceo import Cli
 
 
-cli = Manager("Welcome to Proper v1.2.3")
+class DBCli(Cli):
+    _intro = "Database-related commands"
+
+    def migrate(self, **kwargs):
+        """Autogenerate a new revision file.
+
+        This is an alias for "revision --autogenerate".
+
+        Arguments:
+        - message: Revision message
+        """
+        pass
 
 
-@cli.command(help="Creates a new Proper application at `path`.")
-@param("path", help="Where to create the new application.")
-@option("quiet", help="Supress all output.")
-def new(path):
-    """The `proper new` command creates a new Proper application with a default
-    directory structure and configuration at the path you specify.
+class MyCli(Cli):
+    _intro = "This is PyCeo 3"
 
-    Example: `proper new ~/Code/blog`
-    This generates a skeletal Proper application at `~/Code/blog`.
-    """
-    pass
+    def new(self, path, quiet=False):
+        """Creates a new Proper application at `path`.
 
+        The `proper new` command creates a new Proper application with a default
+        directory structure and configuration at the path you specify.
 
-@cli.command()
-@option("num", type=int)  # Optional type
-def fizzbuzz(num=3):
-    """A bad fizz buzz."""
-    print("fizz " * num + "buzz")
+        Example: `proper new ~/Code/blog`
+        This generates a skeletal Proper application at `~/Code/blog`.
 
+        Arguments:
+        - path: Where to create the new application.
+        - quiet [False]: Supress all output.
+        """
+        pass
 
-@cli.command(group="db")
-@option("message", help="Revision message")
-@option("sql", help="Dont emit SQL to database - dump to standard output instead")
-@option("head", help="Specify head or <branchname>@head to base new revision on")
-def migrate(**kwargs):
-    """Autogenerate a new revision file.
-
-    This is an alias for "revision --autogenerate"."""
-    pass
+    # A subcommand!
+    db = DBCli
 
 
-@cli.command(group="db")
-@option("name", help="Name of section in .ini file to use for Alembic config")
-def branches(**kwargs):
-    """Show current branch points.
-    """
-    pass
-
+cli = MyCli()
 
 if __name__ == "__main__":
-    # cli.run(default="new")
-    cli.run()
+    cli()
+
 ```
 
 
-## How minimal?
+## Helpers
 
-**pyceo** include a `confirm()` and `ask()` utilities, but not any features like progress bars, table formatting, [file editing](https://pypi.org/project/text-editor/), etc. It doesn't matter because for those features many dedicated python libraries can be used.
+Apart of the CLI builder, pyceo includes some commonly-used helper functions
 
-You could say it *focuses on its core competencies while synergetically interface with other libraries to take it to the next level*. 💪🚀
+### confirm()
+
+Ask a yes/no question via and return their answer.
+
+### ask()
+
+Ask a question via input() and return their answer.
+
+### echo()
+
+Renders a pyceo markup to the terminal.
 
 
-## Why don't just use optparse or argparse?
+## Markup system
+
+pyceo uses a simple markup system for producing colored terminal text. Any text between a tag is printed with its style, and you can combine styles by using nested brightness, foreground, and background tags  (only one for each category).
+
+### Brightness
+
+- `<op:bright> ... </op>`
+-  `<op:dim> ... </op>`
+
+### Foreground color
+
+- `<fg:black> ... </fg>`
+- `<fg:red> ... </fg>`
+- `<fg:green> ... </fg>`
+- `<fg:yellow> ... </fg>`
+- `<fg:blue> ... </fg>`
+- `<fg:magenta> ... </fg>`
+- `<fg:cyan> ... </fg>`
+- `<fg:white> ... </fg>`
+- `<fg:lblack> ... </fg>`
+- `<fg:lred> ... </fg>`
+- `<fg:lgreen> ... </fg>`
+- `<fg:lyellow> ... </fg>`
+- `<fg:lblue> ... </fg>`
+- `<fg:lmagenta> ... </fg>`
+- `<fg:lcyan> ... </fg>`
+- `<fg:lwhite> ... </fg>`
+
+### Background color
+
+- `<bg:black> ... </bg>`
+- `<bg:red> ... </bg>`
+- `<bg:green> ... </bg>`
+- `<bg:yellow> ... </bg>`
+- `<bg:blue> ... </bg>`
+- `<bg:magenta> ... </bg>`
+- `<bg:cyan> ... </bg>`
+- `<bg:white> ... </bg>`
+- `<bg:lblack> ... </bg>`
+- `<bg:lred> ... </bg>`
+- `<bg:lgreen> ... </bg>`
+- `<bg:lyellow> ... </bg>`
+- `<bg:lblue> ... </bg>`
+- `<bg:lmagenta> ... </bg>`
+- `<bg:lcyan> ... </bg>`
+- `<bg:lwhite> ... </bg>`
+
+
+## FAQ
+
+### Why don't just use optparse or argparse?
 
 Are you kidding? Because this is way easier to use and understand.
 
-
-## Why don't just use click?
+### Why don't just use click?
 
 Because this looks better and is easier to use and understand.
 
-
-## Why don't just use...?
+### Why don't just use...?
 
 Because this library fits better my mental model. I hope it matches yours as well.
