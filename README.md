@@ -1,13 +1,15 @@
 <h1>
-<img alt="pyceo" src="https://raw.githubusercontent.com/jpsca/pyceo/master/pyceo.png">
+<img alt="pyceo" src="pyceo.png"> pyceo
 </h1>
 
-A minimal, composable, reusable, and ridiculously good looking command-line-**user**-interface toolkit.
+Pyceo is a Python package for creating beautiful, composable, and ridiculously good looking command-line-**user**-interfaces without having to write any extra code.
 
-- Made for interacting with humans
+- Made for interfacing with humans.
+- Arbitrary nesting and composition of commands.
+- Automatic help page generation.
 - No need to redeclare paramaters and options with decorators, just write Python methods.
 - The help of a command is its docstring.
-- Customizable main help page, but pretty by default.
+
 
 ## Usage
 
@@ -37,7 +39,6 @@ if __name__ == "__main__":
 ```
 
 You can add a `_intro` attribute to use as a message at the beginning of the help page.
-
 
 ### Subcommands
 
