@@ -38,7 +38,7 @@ if __name__ == "__main__":
     cli()
 ```
 
-You can add a `_intro` attribute to use as a message at the beginning of the help page.
+The class dosctring will be printed at the beginning of the help page.
 
 ### Subcommands
 
@@ -81,7 +81,8 @@ from pyceo import Cli
 
 
 class DBCli(Cli):
-    _intro = "Database-related commands"
+    """Database-related commands
+    """
 
     def migrate(self, message):
         """Autogenerate a new revision file.
@@ -101,7 +102,8 @@ class DBCli(Cli):
 
 
 class MyCli(Cli):
-    _intro = "Welcome to PyCeo 3"
+    """Welcome to PyCeo 3
+    """
 
     def new(self, path, quiet=False):
         """Creates a new Proper application at `path`.

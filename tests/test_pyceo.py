@@ -10,10 +10,8 @@ class Foo(Cli):
 
 
 class Lorem(Cli):
-    _intro = (
-        "Lorem ipsum is placeholder text commonly used for previewing layouts"
-        " and visual mockups."
-    )
+    """Lorem ipsum is placeholder text commonly used for previewing
+    layouts and visual mockups."""
 
     def ipsum(self):
         """IPSUM
@@ -31,7 +29,8 @@ class Lorem(Cli):
 
 
 class Manager(Cli):
-    _intro = "Hello World!"
+    """Hello World!
+    """
 
     def a(self):
         """AAA"""
@@ -76,7 +75,8 @@ def test_subcommand_help(get_out_text):
     cli()
 
     assert """
- Lorem ipsum is placeholder text commonly used for previewing layouts and visual mockups.
+ Lorem ipsum is placeholder text commonly used for previewing
+ layouts and visual mockups.
 
  Usage:
    manage lorem <command> [args] [options]

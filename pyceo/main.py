@@ -11,8 +11,6 @@ INDENT_START_LEVEL = 1
 
 
 class Cli(HelpMixin):
-    _intro = ""
-
     def __init__(self, *, parent="", indent_level=INDENT_START_LEVEL, **env):
         self._parent = parent
         self._indent_level = indent_level

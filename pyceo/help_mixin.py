@@ -63,17 +63,24 @@ class HelpMixin:
         return INDENT_WITH * self._indent_level
 
     def _help(self, header=True):
+        self._help_intro()
         self._help_header()
         self._help_body()
         print()
 
-    def _help_header(self):
-        if self._intro:
-            intro = textwrap.indent(self._intro.strip(), " ")
+    def _help_intro(self):
+        doc = get_doc(self)
+        if doc:
+            intro = textwrap.indent(doc.strip(), " ")
             echo(f"\n{intro}")
+
+    def _help_header(self):
         echo("\n <fg:yellow>Usage:</fg>")
         echo(f" {self._indent}{self._parent} <command> [args] [options]\n")
-        echo(f" {self._indent}Run any command with the --help option for more information.")
+        echo(
+            f" {self._indent}"
+            "Run any command with the --help option for more information."
+        )
         echo("\n <fg:yellow>Available Commands:</fg>")
 
     def _help_body(self):
