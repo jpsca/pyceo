@@ -90,7 +90,7 @@ class HelpMixin:
             self._help_list_subcommand(name, cls)
 
     def _help_list_subcommand(self, name, cls):
-        echo(f" {self._indent}<fg:cyan>{name.ljust(COL_SIZE)}</fg>")
+        echo(f"\n {self._indent}<fg:cyan>{name.ljust(COL_SIZE)}</fg>")
         cli = self._init_subcommand(name, cls, indent_level=self._indent_level + 1)
         cli._help_body()
 

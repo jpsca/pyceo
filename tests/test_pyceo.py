@@ -60,8 +60,10 @@ def test_main_help(get_out_text):
  Available Commands:
    a            AAA
    b            BBB
+
    foo
      bar          BAR
+
    lorem
      ipsum        IPSUM
      sit          SIT
