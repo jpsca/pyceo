@@ -1,5 +1,5 @@
+import inspect
 import textwrap
-from inspect import isclass
 
 from .helpers import echo
 
@@ -37,11 +37,10 @@ class HelpMixin:
     @property
     def _commands(self):
         commands = {}
-        for name in dir(self):
-            if name.startswith("_"):
-                continue
+        names = [name for name in self.__dir__() if not name.startswith("_")]
+        for name in names:
             cmd = getattr(self, name, None)
-            if isclass(cmd):
+            if inspect.isclass(cmd):
                 continue
             commands[name] = cmd
         return commands
@@ -49,11 +48,10 @@ class HelpMixin:
     @property
     def _subcommands(self):
         subcommands = {}
-        for name in dir(self):
-            if name.startswith("_"):
-                continue
+        names = [name for name in self.__dir__() if not name.startswith("_")]
+        for name in names:
             cls = getattr(self, name, None)
-            if not isclass(cls):
+            if not inspect.isclass(cls):
                 continue
             subcommands[name] = cls
         return subcommands
