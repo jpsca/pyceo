@@ -50,7 +50,7 @@ def confirm(question, default=False, yes_choices=YES_CHOICES, no_choices=NO_CHOI
             options = f"{yes_choices[0]}/{no_choices[0].title()}"
 
     while True:
-        resp = ask(question, default=default_value, options=options)
+        resp = ask(question, default_value, options)
         if default is not None:
             resp = resp or str(default)
         resp = resp.lower()
